@@ -11,9 +11,9 @@ function callback(key: string) {
 
 function SignupAndLoginForm(): JSX.Element {
   return (
-    <div className="d-flex justify-content-center my-5">
-      <div className="p-3 w-75 border border-info border-2 rounded">
-        <Tabs defaultActiveKey="2" onChange={callback}>
+    <div className="my-3">
+      <div className="d-flex justify-content-center">
+        <Tabs className="w-75" defaultActiveKey="2" onChange={callback}>
           <TabPane tab="Signup" key="1">
             <Signup />
           </TabPane>

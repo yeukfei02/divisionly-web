@@ -14,41 +14,49 @@ import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
 import Groups from "../groups/Groups";
+import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
-import Expense from "../expense/Expense";
 import Account from "../account/Account";
 
 const rootUrl = getRootUrl();
 
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (name: string) => <a>{name}</a>,
-  },
-  {
     title: "Description",
     dataIndex: "description",
     key: "description",
   },
   {
-    title: "Phone number",
-    dataIndex: "phone_number",
-    key: "phone_number",
+    title: "Amount",
+    dataIndex: "amount",
+    key: "amount",
   },
   {
-    title: "Avatar",
-    dataIndex: "avatar",
-    key: "avatar",
-    render: (avatar: any) => {
-      let avatarView = null;
+    title: "Split method",
+    dataIndex: "split_method",
+    key: "split_method",
+    render: (split_method: string) => {
+      let splitMethodStr = "";
 
-      if (avatar && avatar.url) {
-        avatarView = <Image width={200} src={avatar.url} />;
+      if (split_method) {
+        splitMethodStr = split_method.replace(/[_]/g, " ");
       }
 
-      return avatarView;
+      return splitMethodStr;
+    },
+  },
+  {
+    title: "Image",
+    dataIndex: "image",
+    key: "image",
+    render: (image: any) => {
+      let imageView = null;
+
+      if (image && image.url) {
+        imageView = <Image width={200} src={image.url} />;
+      }
+
+      return imageView;
     },
   },
   {
@@ -73,22 +81,22 @@ const columns = [
   },
 ];
 
-function Friends(): JSX.Element {
+function Expense(): JSX.Element {
   const navigate = useNavigate();
 
-  const [currentPage, setCurrentPage] = useState("friends");
+  const [currentPage, setCurrentPage] = useState("expense");
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getFriendsRequest();
+    getExpenseRequest();
   }, []);
 
-  const getFriendsRequest = async () => {
+  const getExpenseRequest = async () => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       if (token && userId) {
-        const response = await axios.get(`${rootUrl}/friends`, {
+        const response = await axios.get(`${rootUrl}/expenses`, {
           params: {
             user_id: userId,
           },
@@ -101,8 +109,8 @@ function Friends(): JSX.Element {
           const responseData = response.data;
           console.log("responseData = ", responseData);
 
-          if (responseData && responseData.friends) {
-            setData(responseData.friends);
+          if (responseData && responseData.expenses) {
+            setData(responseData.expenses);
           }
         }
       }
@@ -150,13 +158,13 @@ function Friends(): JSX.Element {
         resultDiv = <Groups />;
         break;
       case "friends":
-        resultDiv = <div>{renderFriendsView()}</div>;
+        resultDiv = <Friends />;
         break;
       case "activity":
         resultDiv = <Activity />;
         break;
       case "expense":
-        resultDiv = <Expense />;
+        resultDiv = <div>{renderExpenseView()}</div>;
         break;
       case "account":
         resultDiv = <Account />;
@@ -168,12 +176,12 @@ function Friends(): JSX.Element {
     return resultDiv;
   };
 
-  const renderFriendsView = () => {
-    const friendsView = (
+  const renderExpenseView = () => {
+    const expenseView = (
       <div>
         <div className="d-flex justify-content-end mx-5 my-3">
-          <Button type="primary" onClick={handleCreateFriendsClick}>
-            Create Friends
+          <Button type="primary" onClick={handleCreateExpenseClick}>
+            Create Expense
           </Button>
         </div>
 
@@ -182,11 +190,11 @@ function Friends(): JSX.Element {
         </div>
       </div>
     );
-    return friendsView;
+    return expenseView;
   };
 
-  const handleCreateFriendsClick = () => {
-    // navigate(`/dashboard/friends/create-friend);
+  const handleCreateExpenseClick = () => {
+    // navigate(`/dashboard/expenses/create-expense);
   };
 
   return (
@@ -196,7 +204,7 @@ function Friends(): JSX.Element {
           <Menu
             onClick={handleClick}
             style={{ height: "100vh" }}
-            defaultSelectedKeys={["2"]}
+            defaultSelectedKeys={["4"]}
             mode="inline"
           >
             <Menu.Item key="1" icon={<GroupOutlined />}>
@@ -229,4 +237,4 @@ function Friends(): JSX.Element {
   );
 }
 
-export default Friends;
+export default Expense;
