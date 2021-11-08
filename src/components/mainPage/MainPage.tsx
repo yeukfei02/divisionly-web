@@ -5,7 +5,7 @@ import Login from "../login/Login";
 
 const { TabPane } = Tabs;
 
-function callback(key: any) {
+function callback(key: string) {
   console.log(key);
 }
 

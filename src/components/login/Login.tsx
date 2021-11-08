@@ -35,13 +35,10 @@ function Login(): JSX.Element {
         password: password,
       };
       const response = await axios.post(`${rootUrl}/users/login`, data);
-      if (response) {
-        const responseData = response.data;
-        console.log("responseData = ", responseData);
+      console.log("response = ", response);
 
-        if (responseData) {
-          navigate(`/dashboard`);
-        }
+      if (response && response.status === 200) {
+        navigate(`/dashboard`);
       }
     } catch (e) {
       console.log("error =", e);
