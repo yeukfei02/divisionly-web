@@ -43,7 +43,7 @@ function Login(): JSX.Element {
           const token = responseData.token;
           localStorage.setItem("token", token);
 
-          navigate(`/dashboard`);
+          navigate(`/dashboard/groups`);
         }
       }
     } catch (e) {

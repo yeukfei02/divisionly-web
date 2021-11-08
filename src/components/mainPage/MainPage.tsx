@@ -1,6 +1,6 @@
 import React from "react";
 import SignupAndLoginForm from "../signupAndLoginForm/SignupAndLoginForm";
-import Dashboard from "../dashboard/Dashboard";
+import Groups from "../groups/Groups";
 
 function MainPage(): JSX.Element {
   const renderDiv = () => {
@@ -8,7 +8,7 @@ function MainPage(): JSX.Element {
 
     const token = localStorage.getItem("token");
     if (token) {
-      resultDiv = <Dashboard />;
+      resultDiv = <Groups />;
     }
 
     return resultDiv;

@@ -38,7 +38,7 @@ function Signup(): JSX.Element {
       console.log("response = ", response);
 
       if (response && response.status === 200) {
-        navigate(`/dashboard`);
+        navigate(`/dashboard/groups`);
       }
     } catch (e) {
       console.log("error =", e);
