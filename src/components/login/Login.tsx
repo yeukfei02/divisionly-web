@@ -47,6 +47,7 @@ function Login(): JSX.Element {
             ? responseData.user.avatar.url
             : "";
           localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(responseData.user));
           localStorage.setItem("userId", userId);
           localStorage.setItem("avatarUrl", avatarUrl);
 

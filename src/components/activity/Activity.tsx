@@ -19,54 +19,6 @@ import Account from "../account/Account";
 
 const rootUrl = getRootUrl();
 
-const columns = [
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-    render: (title: string) => <a>{title}</a>,
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
-  {
-    title: "Image",
-    dataIndex: "image",
-    key: "image",
-    render: (image: any) => {
-      let imageView = null;
-
-      if (image && image.url) {
-        imageView = <Image width={200} src={image.url} />;
-      }
-
-      return imageView;
-    },
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text: string, record: any) => {
-      const id = record.id;
-
-      return (
-        <Space size="middle">
-          <EditOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "blue" }}
-          />
-          <DeleteOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "red" }}
-          />
-        </Space>
-      );
-    },
-  },
-];
-
 function Activity(): JSX.Element {
   const navigate = useNavigate();
 
@@ -99,6 +51,85 @@ function Activity(): JSX.Element {
             setData(responseData.activities);
           }
         }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const columns = [
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      render: (title: string) => <a>{title}</a>,
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (image: any) => {
+        let imageView = null;
+
+        if (image && image.url) {
+          imageView = <Image width={200} src={image.url} />;
+        }
+
+        return imageView;
+      },
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text: string, record: any) => {
+        const id = record.id;
+
+        return (
+          <Space size="middle">
+            <EditOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "blue" }}
+              onClick={() => handleEditClick(id)}
+            />
+            <DeleteOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "red" }}
+              onClick={() => handleDeleteClick(id)}
+            />
+          </Space>
+        );
+      },
+    },
+  ];
+
+  const handleEditClick = (id: string) => {
+    if (id) {
+      console.log("id = ", id);
+    }
+  };
+
+  const handleDeleteClick = async (id: string) => {
+    if (id) {
+      await deleteActivityByIdRequest(id);
+    }
+  };
+
+  const deleteActivityByIdRequest = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${rootUrl}/activities/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response && response.status === 200) {
+        const responseData = response.data;
+        console.log("responseData = ", responseData);
       }
     } catch (e) {
       console.log("error = ", e);

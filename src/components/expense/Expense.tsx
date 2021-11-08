@@ -20,67 +20,6 @@ import Account from "../account/Account";
 
 const rootUrl = getRootUrl();
 
-const columns = [
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
-  {
-    title: "Amount",
-    dataIndex: "amount",
-    key: "amount",
-  },
-  {
-    title: "Split method",
-    dataIndex: "split_method",
-    key: "split_method",
-    render: (split_method: string) => {
-      let splitMethodStr = "";
-
-      if (split_method) {
-        splitMethodStr = split_method.replace(/[_]/g, " ");
-      }
-
-      return splitMethodStr;
-    },
-  },
-  {
-    title: "Image",
-    dataIndex: "image",
-    key: "image",
-    render: (image: any) => {
-      let imageView = null;
-
-      if (image && image.url) {
-        imageView = <Image width={200} src={image.url} />;
-      }
-
-      return imageView;
-    },
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text: string, record: any) => {
-      const id = record.id;
-
-      return (
-        <Space size="middle">
-          <EditOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "blue" }}
-          />
-          <DeleteOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "red" }}
-          />
-        </Space>
-      );
-    },
-  },
-];
-
 function Expense(): JSX.Element {
   const navigate = useNavigate();
 
@@ -113,6 +52,98 @@ function Expense(): JSX.Element {
             setData(responseData.expenses);
           }
         }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const columns = [
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+    },
+    {
+      title: "Split method",
+      dataIndex: "split_method",
+      key: "split_method",
+      render: (split_method: string) => {
+        let splitMethodStr = "";
+
+        if (split_method) {
+          splitMethodStr = split_method.replace(/[_]/g, " ");
+        }
+
+        return splitMethodStr;
+      },
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (image: any) => {
+        let imageView = null;
+
+        if (image && image.url) {
+          imageView = <Image width={200} src={image.url} />;
+        }
+
+        return imageView;
+      },
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text: string, record: any) => {
+        const id = record.id;
+
+        return (
+          <Space size="middle">
+            <EditOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "blue" }}
+              onClick={() => handleEditClick(id)}
+            />
+            <DeleteOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "red" }}
+              onClick={() => handleDeleteClick(id)}
+            />
+          </Space>
+        );
+      },
+    },
+  ];
+
+  const handleEditClick = (id: string) => {
+    if (id) {
+      console.log("id = ", id);
+    }
+  };
+
+  const handleDeleteClick = async (id: string) => {
+    if (id) {
+      await deleteExpenseByIdRequest(id);
+    }
+  };
+
+  const deleteExpenseByIdRequest = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${rootUrl}/expenses/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response && response.status === 200) {
+        const responseData = response.data;
+        console.log("responseData = ", responseData);
       }
     } catch (e) {
       console.log("error = ", e);

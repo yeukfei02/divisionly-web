@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Form, Input, Button, Image } from "antd";
+import { Row, Col, Menu, Form, Input, Button, Image, Typography } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -16,20 +16,30 @@ import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 
 const rootUrl = getRootUrl();
+const { Title } = Typography;
 
 function Account(): JSX.Element {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState("account");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    getAvatarUrl();
+    getUserDetails();
   }, []);
 
-  const getAvatarUrl = () => {
+  const getUserDetails = () => {
     const avatarUrl = localStorage.getItem("avatarUrl");
     if (avatarUrl) setAvatarUrl(avatarUrl);
+
+    const user = localStorage.getItem("user");
+    if (user) {
+      const userJSON = JSON.parse(user);
+      if (userJSON) {
+        setEmail(userJSON.email);
+      }
+    }
   };
 
   const onFinish = async (values: any) => {
@@ -142,7 +152,11 @@ function Account(): JSX.Element {
           <Image width={200} src={avatarUrl} />
         </div>
 
-        <div className="m-5">
+        <div className="d-flex justify-content-center mt-4">
+          <Title level={2}>{email}</Title>
+        </div>
+
+        <div className="mx-5 my-4">
           <Form
             name="basic"
             initialValues={{ remember: true }}

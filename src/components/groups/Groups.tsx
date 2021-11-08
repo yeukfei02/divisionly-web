@@ -20,89 +20,6 @@ import Expense from "../expense/Expense";
 
 const rootUrl = getRootUrl();
 
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (name: string) => <a>{name}</a>,
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
-  {
-    title: "Image",
-    dataIndex: "image",
-    key: "image",
-    render: (image: any) => {
-      let imageView = null;
-
-      if (image && image.url) {
-        imageView = <Image width={200} src={image.url} />;
-      }
-
-      return imageView;
-    },
-  },
-  {
-    title: "Group type",
-    key: "group_type",
-    dataIndex: "group_type",
-    render: (group_type: string) => {
-      let color = "red";
-
-      if (group_type) {
-        switch (group_type) {
-          case "trip":
-            color = "red";
-            break;
-          case "home":
-            color = "blue";
-            break;
-          case "couple":
-            color = "green";
-            break;
-          case "other":
-            color = "cyan";
-            break;
-          default:
-            break;
-        }
-      }
-
-      return (
-        <div>
-          <Tag color={color} key={group_type}>
-            {group_type.toUpperCase()}
-          </Tag>
-        </div>
-      );
-    },
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text: string, record: any) => {
-      const id = record.id;
-
-      return (
-        <Space size="middle">
-          <EditOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "blue" }}
-          />
-          <DeleteOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "red" }}
-          />
-        </Space>
-      );
-    },
-  },
-];
-
 function Groups(): JSX.Element {
   const navigate = useNavigate();
 
@@ -112,6 +29,91 @@ function Groups(): JSX.Element {
   useEffect(() => {
     getGroupsRequest();
   }, []);
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (name: string) => <a>{name}</a>,
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (image: any) => {
+        let imageView = null;
+
+        if (image && image.url) {
+          imageView = <Image width={200} src={image.url} />;
+        }
+
+        return imageView;
+      },
+    },
+    {
+      title: "Group type",
+      key: "group_type",
+      dataIndex: "group_type",
+      render: (group_type: string) => {
+        let color = "red";
+
+        if (group_type) {
+          switch (group_type) {
+            case "trip":
+              color = "red";
+              break;
+            case "home":
+              color = "blue";
+              break;
+            case "couple":
+              color = "green";
+              break;
+            case "other":
+              color = "cyan";
+              break;
+            default:
+              break;
+          }
+        }
+
+        return (
+          <div>
+            <Tag color={color} key={group_type}>
+              {group_type.toUpperCase()}
+            </Tag>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text: string, record: any) => {
+        const id = record.id;
+
+        return (
+          <Space size="middle">
+            <EditOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "blue" }}
+              onClick={() => handleEditClick(id)}
+            />
+            <DeleteOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "red" }}
+              onClick={() => handleDeleteClick(id)}
+            />
+          </Space>
+        );
+      },
+    },
+  ];
 
   const getGroupsRequest = async () => {
     try {
@@ -135,6 +137,35 @@ function Groups(): JSX.Element {
             setData(responseData.groups);
           }
         }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const handleEditClick = (id: string) => {
+    if (id) {
+      console.log("id = ", id);
+    }
+  };
+
+  const handleDeleteClick = async (id: string) => {
+    if (id) {
+      await deleteGroupByIdRequest(id);
+    }
+  };
+
+  const deleteGroupByIdRequest = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${rootUrl}/groups/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response && response.status === 200) {
+        const responseData = response.data;
+        console.log("responseData = ", responseData);
       }
     } catch (e) {
       console.log("error = ", e);
