@@ -38,7 +38,13 @@ function Login(): JSX.Element {
       console.log("response = ", response);
 
       if (response && response.status === 200) {
-        navigate(`/dashboard`);
+        const responseData = response.data;
+        if (responseData) {
+          const token = responseData.token;
+          localStorage.setItem("token", token);
+
+          navigate(`/dashboard`);
+        }
       }
     } catch (e) {
       console.log("error =", e);
