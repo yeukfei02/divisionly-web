@@ -5,6 +5,8 @@
 
 split expenses with friends
 
+url: <>
+
 ## Requirement
 
 - install yarn
