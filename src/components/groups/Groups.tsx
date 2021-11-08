@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Menu, Button, Table, Tag, Space } from "antd";
+import { Row, Col, Menu, Button, Table, Tag, Space, Image } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
   MenuOutlined,
+  DollarOutlined,
   SettingOutlined,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
 import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
-import axios from "axios";
+import Expense from "../expense/Expense";
 
 const rootUrl = getRootUrl();
 
@@ -23,7 +25,7 @@ const columns = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-    render: (text: string) => <a>{text}</a>,
+    render: (name: string) => <a>{name}</a>,
   },
   {
     title: "Description",
@@ -31,15 +33,49 @@ const columns = [
     key: "description",
   },
   {
+    title: "Image",
+    dataIndex: "image",
+    key: "image",
+    render: (image: any) => {
+      let imageView = null;
+
+      if (image && image.url) {
+        imageView = <Image width={200} src={image.url} />;
+      }
+
+      return imageView;
+    },
+  },
+  {
     title: "Group type",
-    key: "groupType",
-    dataIndex: "groupType",
-    render: (groupType: any) => {
-      const color = "red";
+    key: "group_type",
+    dataIndex: "group_type",
+    render: (group_type: string) => {
+      let color = "red";
+
+      if (group_type) {
+        switch (group_type) {
+          case "trip":
+            color = "red";
+            break;
+          case "home":
+            color = "blue";
+            break;
+          case "couple":
+            color = "green";
+            break;
+          case "other":
+            color = "cyan";
+            break;
+          default:
+            break;
+        }
+      }
+
       return (
         <div>
-          <Tag color={color} key={groupType}>
-            {groupType.toUpperCase()}
+          <Tag color={color} key={group_type}>
+            {group_type.toUpperCase()}
           </Tag>
         </div>
       );
@@ -49,13 +85,18 @@ const columns = [
     title: "Action",
     key: "action",
     render: (text: string, record: any) => {
-      console.log("text = ", text);
-      console.log("record = ", record);
+      const id = record.id;
 
       return (
         <Space size="middle">
-          <EditOutlined />
-          <DeleteOutlined />
+          <EditOutlined
+            className="cursor"
+            style={{ fontSize: "1.5em", color: "blue" }}
+          />
+          <DeleteOutlined
+            className="cursor"
+            style={{ fontSize: "1.5em", color: "red" }}
+          />
         </Space>
       );
     },
@@ -118,6 +159,10 @@ function Groups(): JSX.Element {
           navigate(`/dashboard/activity`);
           break;
         case "4":
+          setCurrentPage("expense");
+          navigate(`/dashboard/expense`);
+          break;
+        case "5":
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
@@ -140,6 +185,9 @@ function Groups(): JSX.Element {
       case "activity":
         resultDiv = <Activity />;
         break;
+      case "expense":
+        resultDiv = <Expense />;
+        break;
       case "account":
         resultDiv = <Account />;
         break;
@@ -153,7 +201,7 @@ function Groups(): JSX.Element {
   const renderGroupsView = () => {
     const groupsView = (
       <div>
-        <div className="d-flex justify-content-end mx-5 my-2">
+        <div className="d-flex justify-content-end mx-5 my-3">
           <Button type="primary" onClick={handleCreateGroupsClick}>
             Create Groups
           </Button>
@@ -177,7 +225,7 @@ function Groups(): JSX.Element {
         <Col span={4}>
           <Menu
             onClick={handleClick}
-            style={{ width: "100%", height: "100vh" }}
+            style={{ height: "100vh" }}
             defaultSelectedKeys={["1"]}
             mode="inline"
           >
@@ -190,13 +238,16 @@ function Groups(): JSX.Element {
             <Menu.Item key="3" icon={<MenuOutlined />}>
               Activity
             </Menu.Item>
-            <Menu.Item key="4" icon={<SettingOutlined />}>
+            <Menu.Item key="4" icon={<DollarOutlined />}>
+              Expense
+            </Menu.Item>
+            <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
             </Menu.Item>
           </Menu>
         </Col>
-        <Col span={8}>
-          <div style={{ width: "100vw" }}>
+        <Col span={20}>
+          <div>
             <div className="d-flex justify-content-end">
               <CustomAvatar />
             </div>

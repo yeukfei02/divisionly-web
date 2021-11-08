@@ -38,7 +38,7 @@ function CustomAvatar(): JSX.Element {
   };
 
   return (
-    <div className="d-flex justify-content-end m-5">
+    <div className="d-flex justify-content-end mx-5 my-4">
       <Dropdown overlay={menu}>
         <Avatar size={64} src={avatarUrl} />
       </Dropdown>

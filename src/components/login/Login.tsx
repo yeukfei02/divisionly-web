@@ -1,8 +1,9 @@
 import React from "react";
-import { Typography, Form, Input, Button, Card } from "antd";
+import { Typography, Form, Input, Button, Image, Card } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
+import logo from "../../images/divisionly.png";
 
 const { Title } = Typography;
 
@@ -62,9 +63,9 @@ function Login(): JSX.Element {
       <div className="d-flex justify-content-center my-4">
         <Card className="p-3 w-75">
           <div className="d-flex justify-content-center">
-            <Title>Divisionly</Title>
+            <Image width={380} src={logo} preview={false} />
           </div>
-          <div className="d-flex justify-content-center mb-3">
+          <div className="d-flex justify-content-center my-3">
             <Title level={3}>Login</Title>
           </div>
           <Form

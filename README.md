@@ -1,4 +1,7 @@
-# divisionly-web
+<p align="center">
+  <img width="350px" src="https://github.com/yeukfei02/divisionly-web/blob/main/readme-icon.png?raw=true"><br/>
+  <h2 align="center">divisionly-web</h2>
+</p>
 
 split expenses with friends
 
