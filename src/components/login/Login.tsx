@@ -71,7 +71,7 @@ function Login(): JSX.Element {
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: "Please enter your email!" }]}
+              rules={[{ required: true, message: "Please enter your email" }]}
             >
               <Input />
             </Form.Item>
@@ -80,7 +80,7 @@ function Login(): JSX.Element {
               label="Password"
               name="password"
               rules={[
-                { required: true, message: "Please enter your password!" },
+                { required: true, message: "Please enter your password" },
               ]}
             >
               <Input.Password />
