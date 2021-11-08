@@ -20,59 +20,6 @@ import Account from "../account/Account";
 
 const rootUrl = getRootUrl();
 
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (name: string) => <a>{name}</a>,
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
-  {
-    title: "Phone number",
-    dataIndex: "phone_number",
-    key: "phone_number",
-  },
-  {
-    title: "Avatar",
-    dataIndex: "avatar",
-    key: "avatar",
-    render: (avatar: any) => {
-      let avatarView = null;
-
-      if (avatar && avatar.url) {
-        avatarView = <Image width={200} src={avatar.url} />;
-      }
-
-      return avatarView;
-    },
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text: string, record: any) => {
-      const id = record.id;
-
-      return (
-        <Space size="middle">
-          <EditOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "blue" }}
-          />
-          <DeleteOutlined
-            className="cursor"
-            style={{ fontSize: "1.5em", color: "red" }}
-          />
-        </Space>
-      );
-    },
-  },
-];
-
 function Friends(): JSX.Element {
   const navigate = useNavigate();
 
@@ -105,6 +52,90 @@ function Friends(): JSX.Element {
             setData(responseData.friends);
           }
         }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (name: string) => <a>{name}</a>,
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Phone number",
+      dataIndex: "phone_number",
+      key: "phone_number",
+    },
+    {
+      title: "Avatar",
+      dataIndex: "avatar",
+      key: "avatar",
+      render: (avatar: any) => {
+        let avatarView = null;
+
+        if (avatar && avatar.url) {
+          avatarView = <Image width={200} src={avatar.url} />;
+        }
+
+        return avatarView;
+      },
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text: string, record: any) => {
+        const id = record.id;
+
+        return (
+          <Space size="middle">
+            <EditOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "blue" }}
+              onClick={() => handleEditClick(id)}
+            />
+            <DeleteOutlined
+              className="cursor"
+              style={{ fontSize: "1.5em", color: "red" }}
+              onClick={() => handleDeleteClick(id)}
+            />
+          </Space>
+        );
+      },
+    },
+  ];
+
+  const handleEditClick = (id: string) => {
+    if (id) {
+      console.log("id = ", id);
+    }
+  };
+
+  const handleDeleteClick = async (id: string) => {
+    if (id) {
+      await deleteFriendByIdRequest(id);
+    }
+  };
+
+  const deleteFriendByIdRequest = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${rootUrl}/friends/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response && response.status === 200) {
+        const responseData = response.data;
+        console.log("responseData = ", responseData);
       }
     } catch (e) {
       console.log("error = ", e);
