@@ -38,7 +38,7 @@ function Signup(): JSX.Element {
       console.log("response = ", response);
 
       if (response && response.status === 200) {
-        navigate(`/dashboard`);
+        navigate(`/dashboard/groups`);
       }
     } catch (e) {
       console.log("error =", e);
@@ -65,7 +65,7 @@ function Signup(): JSX.Element {
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: "Please enter your email!" }]}
+              rules={[{ required: true, message: "Please enter your email" }]}
             >
               <Input />
             </Form.Item>
@@ -74,7 +74,7 @@ function Signup(): JSX.Element {
               label="Password"
               name="password"
               rules={[
-                { required: true, message: "Please enter your password!" },
+                { required: true, message: "Please enter your password" },
               ]}
             >
               <Input.Password />

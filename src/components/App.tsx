@@ -1,14 +1,20 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./mainPage/MainPage";
-import Dashboard from "./dashboard/Dashboard";
+import Groups from "./groups/Groups";
+import Friends from "./friends/Friends";
+import Activity from "./activity/Activity";
+import Account from "./account/Account";
 
 function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/groups" element={<Groups />} />
+        <Route path="/dashboard/friends" element={<Friends />} />
+        <Route path="/dashboard/activity" element={<Activity />} />
+        <Route path="/dashboard/account" element={<Account />} />
       </Routes>
     </BrowserRouter>
   );

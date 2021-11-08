@@ -38,7 +38,13 @@ function Login(): JSX.Element {
       console.log("response = ", response);
 
       if (response && response.status === 200) {
-        navigate(`/dashboard`);
+        const responseData = response.data;
+        if (responseData) {
+          const token = responseData.token;
+          localStorage.setItem("token", token);
+
+          navigate(`/dashboard/groups`);
+        }
       }
     } catch (e) {
       console.log("error =", e);
@@ -65,7 +71,7 @@ function Login(): JSX.Element {
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: "Please enter your email!" }]}
+              rules={[{ required: true, message: "Please enter your email" }]}
             >
               <Input />
             </Form.Item>
@@ -74,7 +80,7 @@ function Login(): JSX.Element {
               label="Password"
               name="password"
               rules={[
-                { required: true, message: "Please enter your password!" },
+                { required: true, message: "Please enter your password" },
               ]}
             >
               <Input.Password />
