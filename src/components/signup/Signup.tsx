@@ -1,15 +1,45 @@
-import React from "react";
-import { Typography, Form, Input, Button, Card } from "antd";
+import React, { useState } from "react";
+import { Typography, Form, Input, Button, Card, Upload, message } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 
+const { Dragger } = Upload;
 const { Title } = Typography;
 
 const rootUrl = getRootUrl();
 
 function Signup(): JSX.Element {
   const navigate = useNavigate();
+
+  const [avatar, setAvatar] = useState({});
+
+  const props = {
+    name: "file",
+    multiple: false,
+    action: `${rootUrl}/users/upload`,
+    onChange(info: any) {
+      const { status } = info.file;
+      if (status !== "uploading") {
+        console.log("info.file = ", info.file);
+        console.log("info.fileList = ", info.fileList);
+
+        const originFileObj = info.file.originFileObj;
+        if (originFileObj) {
+          setAvatar(originFileObj);
+        }
+      }
+      if (status === "done") {
+        message.success(`${info.file.name} file uploaded successfully.`);
+      } else if (status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e: any) {
+      console.log("Dropped files = ", e.dataTransfer.files);
+    },
+  };
 
   const onFinish = async (values: any) => {
     console.log("values = ", values);
@@ -18,8 +48,8 @@ function Signup(): JSX.Element {
       const email = values.email;
       const password = values.password;
 
-      if (email && password) {
-        await signupRequest(email, password);
+      if (email && password && avatar) {
+        await signupRequest(email, password, avatar);
       }
     }
   };
@@ -28,16 +58,26 @@ function Signup(): JSX.Element {
     console.log("error = ", errorInfo);
   };
 
-  const signupRequest = async (email: string, password: string) => {
+  const signupRequest = async (
+    email: string,
+    password: string,
+    avatar: any
+  ) => {
     try {
-      const data = {
-        email: email,
-        password: password,
-      };
-      const response = await axios.post(`${rootUrl}/users/signup`, data);
-      console.log("response = ", response);
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("avatar", avatar);
 
+      const response = await axios.post(`${rootUrl}/users/signup`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       if (response && response.status === 200) {
+        const responseData = response.data;
+        console.log("responseData = ", responseData);
+
         navigate(`/dashboard/groups`);
       }
     } catch (e) {
@@ -78,6 +118,20 @@ function Signup(): JSX.Element {
               ]}
             >
               <Input.Password />
+            </Form.Item>
+
+            <Form.Item>
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload avatar image
+                </p>
+                <p className="ant-upload-hint">
+                  Only support for a single upload.
+                </p>
+              </Dragger>
             </Form.Item>
 
             <Form.Item>

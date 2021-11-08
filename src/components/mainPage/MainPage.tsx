@@ -7,7 +7,8 @@ function MainPage(): JSX.Element {
     let resultDiv = <SignupAndLoginForm />;
 
     const token = localStorage.getItem("token");
-    if (token) {
+    const userId = localStorage.getItem("userId");
+    if (token && userId) {
       resultDiv = <Groups />;
     }
 
