@@ -1,20 +1,104 @@
-import React, { useState } from "react";
-import { Row, Col, Menu } from "antd";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Menu, Button, Table, Tag, Space } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
   MenuOutlined,
   SettingOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { getRootUrl } from "../../helpers/helpers";
+import CustomAvatar from "../customAvatar/CustomAvatar";
 import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
+import axios from "axios";
+
+const rootUrl = getRootUrl();
+
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    render: (text: string) => <a>{text}</a>,
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+  },
+  {
+    title: "Group type",
+    key: "groupType",
+    dataIndex: "groupType",
+    render: (groupType: any) => {
+      const color = "red";
+      return (
+        <div>
+          <Tag color={color} key={groupType}>
+            {groupType.toUpperCase()}
+          </Tag>
+        </div>
+      );
+    },
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (text: string, record: any) => {
+      console.log("text = ", text);
+      console.log("record = ", record);
+
+      return (
+        <Space size="middle">
+          <EditOutlined />
+          <DeleteOutlined />
+        </Space>
+      );
+    },
+  },
+];
 
 function Groups(): JSX.Element {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState("groups");
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getGroupsRequest();
+  }, []);
+
+  const getGroupsRequest = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        const response = await axios.get(`${rootUrl}/groups`, {
+          params: {
+            user_id: userId,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.groups) {
+            setData(responseData.groups);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
 
   const handleClick = (e: any) => {
     console.log("click = ", e);
@@ -48,7 +132,7 @@ function Groups(): JSX.Element {
 
     switch (currentPage) {
       case "groups":
-        resultDiv = <div>Groups</div>;
+        resultDiv = <div>{renderGroupsView()}</div>;
         break;
       case "friends":
         resultDiv = <Friends />;
@@ -64,6 +148,27 @@ function Groups(): JSX.Element {
     }
 
     return resultDiv;
+  };
+
+  const renderGroupsView = () => {
+    const groupsView = (
+      <div>
+        <div className="d-flex justify-content-end mx-5 my-2">
+          <Button type="primary" onClick={handleCreateGroupsClick}>
+            Create Groups
+          </Button>
+        </div>
+
+        <div className="m-5">
+          <Table columns={columns} dataSource={data} />
+        </div>
+      </div>
+    );
+    return groupsView;
+  };
+
+  const handleCreateGroupsClick = () => {
+    // navigate(`/dashboard/groups/create-group);
   };
 
   return (
@@ -90,7 +195,14 @@ function Groups(): JSX.Element {
             </Menu.Item>
           </Menu>
         </Col>
-        <Col span={8}>{renderDiv()}</Col>
+        <Col span={8}>
+          <div style={{ width: "100vw" }}>
+            <div className="d-flex justify-content-end">
+              <CustomAvatar />
+            </div>
+            {renderDiv()}
+          </div>
+        </Col>
       </Row>
     </div>
   );

@@ -35,13 +35,19 @@ function Login(): JSX.Element {
         password: password,
       };
       const response = await axios.post(`${rootUrl}/users/login`, data);
-      console.log("response = ", response);
-
       if (response && response.status === 200) {
         const responseData = response.data;
+        console.log("responseData = ", responseData);
+
         if (responseData) {
           const token = responseData.token;
+          const userId = responseData.user.id;
+          const avatarUrl = responseData.user.avatar
+            ? responseData.user.avatar.url
+            : "";
           localStorage.setItem("token", token);
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("avatarUrl", avatarUrl);
 
           navigate(`/dashboard/groups`);
         }
