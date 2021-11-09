@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Form, Input, Button, Image, Card } from "antd";
+import { Typography, Form, Input, Button, Image, Card, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
@@ -51,11 +51,13 @@ function Login(): JSX.Element {
           localStorage.setItem("userId", userId);
           localStorage.setItem("avatarUrl", avatarUrl);
 
+          message.success("Login success");
           navigate(`/dashboard/groups`);
         }
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("error =", e);
+      message.error(`Login fail, error = ${e.message}`);
     }
   };
 
