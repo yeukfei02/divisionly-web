@@ -102,12 +102,12 @@ function Account(): JSX.Element {
           navigate(`/dashboard/friends`);
           break;
         case "3":
-          setCurrentPage("activity");
-          navigate(`/dashboard/activity`);
+          setCurrentPage("activities");
+          navigate(`/dashboard/activities`);
           break;
         case "4":
-          setCurrentPage("expense");
-          navigate(`/dashboard/expense`);
+          setCurrentPage("expenses");
+          navigate(`/dashboard/expenses`);
           break;
         case "5":
           setCurrentPage("account");
@@ -129,10 +129,10 @@ function Account(): JSX.Element {
       case "friends":
         resultDiv = <Friends />;
         break;
-      case "activity":
+      case "activities":
         resultDiv = <Activity />;
         break;
-      case "expense":
+      case "expenses":
         resultDiv = <Expense />;
         break;
       case "account":

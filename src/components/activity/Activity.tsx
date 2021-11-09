@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Button, Table, Space, Image } from "antd";
+import { Row, Col, Menu, Button, Table, Space, Image, message } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -22,7 +22,7 @@ const rootUrl = getRootUrl();
 function Activity(): JSX.Element {
   const navigate = useNavigate();
 
-  const [currentPage, setCurrentPage] = useState("activity");
+  const [currentPage, setCurrentPage] = useState("activities");
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -130,9 +130,14 @@ function Activity(): JSX.Element {
       if (response && response.status === 200) {
         const responseData = response.data;
         console.log("responseData = ", responseData);
+
+        message.success("Delete Activity success");
+        await getActivityRequest();
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("error = ", e);
+
+      message.error(`Delete Activity fail, error = ${e.message}`);
     }
   };
 
@@ -150,12 +155,12 @@ function Activity(): JSX.Element {
           navigate(`/dashboard/friends`);
           break;
         case "3":
-          setCurrentPage("activity");
-          navigate(`/dashboard/activity`);
+          setCurrentPage("activities");
+          navigate(`/dashboard/activities`);
           break;
         case "4":
-          setCurrentPage("expense");
-          navigate(`/dashboard/expense`);
+          setCurrentPage("expenses");
+          navigate(`/dashboard/expenses`);
           break;
         case "5":
           setCurrentPage("account");
@@ -177,7 +182,7 @@ function Activity(): JSX.Element {
       case "friends":
         resultDiv = <Friends />;
         break;
-      case "activity":
+      case "activities":
         resultDiv = <div>{renderActivityView()}</div>;
         break;
       case "account":
@@ -208,7 +213,7 @@ function Activity(): JSX.Element {
   };
 
   const handleCreateActivityClick = () => {
-    // navigate(`/dashboard/activities/create-activity);
+    navigate(`/dashboard/activities/create-activity`);
   };
 
   return (

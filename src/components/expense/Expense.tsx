@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Button, Table, Space, Image } from "antd";
+import { Row, Col, Menu, Button, Table, Space, Image, message } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -23,7 +23,7 @@ const rootUrl = getRootUrl();
 function Expense(): JSX.Element {
   const navigate = useNavigate();
 
-  const [currentPage, setCurrentPage] = useState("expense");
+  const [currentPage, setCurrentPage] = useState("expenses");
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -144,9 +144,14 @@ function Expense(): JSX.Element {
       if (response && response.status === 200) {
         const responseData = response.data;
         console.log("responseData = ", responseData);
+
+        message.success("Delete Expense success");
+        await getExpenseRequest();
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("error = ", e);
+
+      message.error(`Delete Expense fail, error = ${e.message}`);
     }
   };
 
@@ -164,12 +169,12 @@ function Expense(): JSX.Element {
           navigate(`/dashboard/friends`);
           break;
         case "3":
-          setCurrentPage("activity");
-          navigate(`/dashboard/activity`);
+          setCurrentPage("activities");
+          navigate(`/dashboard/activities`);
           break;
         case "4":
-          setCurrentPage("expense");
-          navigate(`/dashboard/expense`);
+          setCurrentPage("expenses");
+          navigate(`/dashboard/expenses`);
           break;
         case "5":
           setCurrentPage("account");
@@ -191,10 +196,10 @@ function Expense(): JSX.Element {
       case "friends":
         resultDiv = <Friends />;
         break;
-      case "activity":
+      case "activities":
         resultDiv = <Activity />;
         break;
-      case "expense":
+      case "expenses":
         resultDiv = <div>{renderExpenseView()}</div>;
         break;
       case "account":
@@ -225,7 +230,7 @@ function Expense(): JSX.Element {
   };
 
   const handleCreateExpenseClick = () => {
-    // navigate(`/dashboard/expenses/create-expense);
+    navigate(`/dashboard/expenses/create-expense`);
   };
 
   return (
