@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Button, Table, Space, Image, message } from "antd";
+import { Row, Col, Menu, Table, Image } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
-  EditOutlined,
-  DeleteOutlined,
+  // EditOutlined,
+  // DeleteOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -119,39 +119,39 @@ function Activity(): JSX.Element {
     // },
   ];
 
-  const handleEditClick = (id: string) => {
-    if (id) {
-      console.log("id = ", id);
-    }
-  };
+  // const handleEditClick = (id: string) => {
+  //   if (id) {
+  //     console.log("id = ", id);
+  //   }
+  // };
 
-  const handleDeleteClick = async (id: string) => {
-    if (id) {
-      await deleteActivityByIdRequest(id);
-    }
-  };
+  // const handleDeleteClick = async (id: string) => {
+  //   if (id) {
+  //     await deleteActivityByIdRequest(id);
+  //   }
+  // };
 
-  const deleteActivityByIdRequest = async (id: string) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.delete(`${rootUrl}/activities/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response && response.status === 200) {
-        const responseData = response.data;
-        console.log("responseData = ", responseData);
+  // const deleteActivityByIdRequest = async (id: string) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await axios.delete(`${rootUrl}/activities/${id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response && response.status === 200) {
+  //       const responseData = response.data;
+  //       console.log("responseData = ", responseData);
 
-        message.success("Delete Activity success");
-        await getActivityRequest();
-      }
-    } catch (e: any) {
-      console.log("error = ", e);
+  //       message.success("Delete Activity success");
+  //       await getActivityRequest();
+  //     }
+  //   } catch (e: any) {
+  //     console.log("error = ", e);
 
-      message.error(`Delete Activity fail, error = ${e.message}`);
-    }
-  };
+  //     message.error(`Delete Activity fail, error = ${e.message}`);
+  //   }
+  // };
 
   const handleClick = (e: any) => {
     console.log("click = ", e);
@@ -224,9 +224,9 @@ function Activity(): JSX.Element {
     return activityView;
   };
 
-  const handleCreateActivityClick = () => {
-    navigate(`/dashboard/activities/create-activity`);
-  };
+  // const handleCreateActivityClick = () => {
+  //   navigate(`/dashboard/activities/create-activity`);
+  // };
 
   return (
     <div>
