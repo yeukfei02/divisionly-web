@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Button, Table, Space, Image } from "antd";
+import { Row, Col, Menu, Button, Table, Space, Image, message } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import dayjs from "dayjs";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
 import Groups from "../groups/Groups";
@@ -90,6 +91,17 @@ function Friends(): JSX.Element {
       },
     },
     {
+      title: "Created at",
+      dataIndex: "created_at",
+      key: "created_at",
+      render: (created_at: string) => {
+        const formattedCreatedAt = dayjs(created_at).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+        return formattedCreatedAt;
+      },
+    },
+    {
       title: "Action",
       key: "action",
       render: (text: string, record: any) => {
@@ -136,9 +148,14 @@ function Friends(): JSX.Element {
       if (response && response.status === 200) {
         const responseData = response.data;
         console.log("responseData = ", responseData);
+
+        message.success("Delete Friend success");
+        await getFriendsRequest();
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("error = ", e);
+
+      message.error(`Delete Friend fail, error = ${e.message}`);
     }
   };
 
@@ -156,12 +173,12 @@ function Friends(): JSX.Element {
           navigate(`/dashboard/friends`);
           break;
         case "3":
-          setCurrentPage("activity");
-          navigate(`/dashboard/activity`);
+          setCurrentPage("activities");
+          navigate(`/dashboard/activities`);
           break;
         case "4":
-          setCurrentPage("expense");
-          navigate(`/dashboard/expense`);
+          setCurrentPage("expenses");
+          navigate(`/dashboard/expenses`);
           break;
         case "5":
           setCurrentPage("account");
@@ -183,10 +200,10 @@ function Friends(): JSX.Element {
       case "friends":
         resultDiv = <div>{renderFriendsView()}</div>;
         break;
-      case "activity":
+      case "activities":
         resultDiv = <Activity />;
         break;
-      case "expense":
+      case "expenses":
         resultDiv = <Expense />;
         break;
       case "account":
@@ -203,8 +220,8 @@ function Friends(): JSX.Element {
     const friendsView = (
       <div>
         <div className="d-flex justify-content-end mx-5 my-3">
-          <Button type="primary" onClick={handleCreateFriendsClick}>
-            Create Friends
+          <Button type="primary" onClick={handleCreateFriendClick}>
+            Create Friend
           </Button>
         </div>
 
@@ -216,8 +233,8 @@ function Friends(): JSX.Element {
     return friendsView;
   };
 
-  const handleCreateFriendsClick = () => {
-    // navigate(`/dashboard/friends/create-friend);
+  const handleCreateFriendClick = () => {
+    navigate(`/dashboard/friends/create-friend`);
   };
 
   return (

@@ -10,7 +10,6 @@ import {
   message,
 } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 import logo from "../../images/divisionly.png";
@@ -21,8 +20,6 @@ const { Title } = Typography;
 const rootUrl = getRootUrl();
 
 function Signup(): JSX.Element {
-  const navigate = useNavigate();
-
   const [avatar, setAvatar] = useState({});
 
   const props = {
@@ -88,10 +85,11 @@ function Signup(): JSX.Element {
         const responseData = response.data;
         console.log("responseData = ", responseData);
 
-        navigate(`/dashboard/groups`);
+        message.success("Signup success");
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("error =", e);
+      message.error(`Signup fail, error = ${e.message}`);
     }
   };
 
