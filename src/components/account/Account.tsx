@@ -23,7 +23,7 @@ function Account(): JSX.Element {
 
   const [currentPage, setCurrentPage] = useState("account");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     getUserDetails();
@@ -37,7 +37,8 @@ function Account(): JSX.Element {
     if (user) {
       const userJSON = JSON.parse(user);
       if (userJSON) {
-        setEmail(userJSON.email);
+        const fullName = `${userJSON.first_name} ${userJSON.last_name}`;
+        setUsername(fullName);
       }
     }
   };
@@ -153,7 +154,7 @@ function Account(): JSX.Element {
         </div>
 
         <div className="d-flex justify-content-center mt-4">
-          <Title level={2}>{email}</Title>
+          <Title level={2}>{username}</Title>
         </div>
 
         <div className="mx-5 my-4">

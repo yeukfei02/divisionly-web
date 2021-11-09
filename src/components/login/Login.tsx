@@ -13,8 +13,6 @@ function Login(): JSX.Element {
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
-    console.log("values = ", values);
-
     if (values) {
       const email = values.email;
       const password = values.password;

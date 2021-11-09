@@ -49,14 +49,14 @@ function Signup(): JSX.Element {
   };
 
   const onFinish = async (values: any) => {
-    console.log("values = ", values);
-
     if (values) {
       const email = values.email;
       const password = values.password;
+      const firstName = values.firstName;
+      const lastName = values.lastName;
 
       if (email && password && avatar) {
-        await signupRequest(email, password, avatar);
+        await signupRequest(email, password, firstName, lastName, avatar);
       }
     }
   };
@@ -68,12 +68,16 @@ function Signup(): JSX.Element {
   const signupRequest = async (
     email: string,
     password: string,
+    firstName: string,
+    lastName: string,
     avatar: any
   ) => {
     try {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
       formData.append("avatar", avatar);
 
       const response = await axios.post(`${rootUrl}/users/signup`, formData, {
@@ -126,6 +130,26 @@ function Signup(): JSX.Element {
               ]}
             >
               <Input.Password />
+            </Form.Item>
+
+            <Form.Item
+              label="First name"
+              name="firstName"
+              rules={[
+                { required: true, message: "Please enter your first name" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="Last name"
+              name="lastName"
+              rules={[
+                { required: true, message: "Please enter your last name" },
+              ]}
+            >
+              <Input />
             </Form.Item>
 
             <Form.Item>
