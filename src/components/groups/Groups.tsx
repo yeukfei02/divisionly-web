@@ -21,6 +21,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import dayjs from "dayjs";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
 import Friends from "../friends/Friends";
@@ -99,6 +100,17 @@ function Groups(): JSX.Element {
             </Tag>
           </div>
         );
+      },
+    },
+    {
+      title: "Created at",
+      dataIndex: "created_at",
+      key: "created_at",
+      render: (created_at: string) => {
+        const formattedCreatedAt = dayjs(created_at).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+        return formattedCreatedAt;
       },
     },
     {

@@ -95,7 +95,7 @@ function CreateFriend(): JSX.Element {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
-        formData.append("phone_umber", phoneNumber.toString());
+        formData.append("phone_number", phoneNumber.toString());
         formData.append("user_id", userId);
         formData.append("avatar", avatar as any);
 
