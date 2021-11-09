@@ -95,28 +95,28 @@ function Activity(): JSX.Element {
         return formattedCreatedAt;
       },
     },
-    {
-      title: "Action",
-      key: "action",
-      render: (text: string, record: any) => {
-        const id = record.id;
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (text: string, record: any) => {
+    //     const id = record.id;
 
-        return (
-          <Space size="middle">
-            <EditOutlined
-              className="cursor"
-              style={{ fontSize: "1.5em", color: "blue" }}
-              onClick={() => handleEditClick(id)}
-            />
-            <DeleteOutlined
-              className="cursor"
-              style={{ fontSize: "1.5em", color: "red" }}
-              onClick={() => handleDeleteClick(id)}
-            />
-          </Space>
-        );
-      },
-    },
+    //     return (
+    //       <Space size="middle">
+    //         <EditOutlined
+    //           className="cursor"
+    //           style={{ fontSize: "1.5em", color: "blue" }}
+    //           onClick={() => handleEditClick(id)}
+    //         />
+    //         <DeleteOutlined
+    //           className="cursor"
+    //           style={{ fontSize: "1.5em", color: "red" }}
+    //           onClick={() => handleDeleteClick(id)}
+    //         />
+    //       </Space>
+    //     );
+    //   },
+    // },
   ];
 
   const handleEditClick = (id: string) => {
@@ -210,13 +210,13 @@ function Activity(): JSX.Element {
   const renderActivityView = () => {
     const activityView = (
       <div>
-        <div className="d-flex justify-content-end mx-5 my-3">
+        {/* <div className="d-flex justify-content-end mx-5 my-3">
           <Button type="primary" onClick={handleCreateActivityClick}>
             Create Activity
           </Button>
-        </div>
+        </div> */}
 
-        <div className="m-5">
+        <div className="mx-5 my-4">
           <Table columns={columns} dataSource={data} />
         </div>
       </div>
