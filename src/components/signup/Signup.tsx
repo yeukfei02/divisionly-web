@@ -158,7 +158,7 @@ function Signup(): JSX.Element {
                   <InboxOutlined />
                 </p>
                 <p className="ant-upload-text">
-                  Click or drag file to this area to upload avatar image
+                  Click or drag file to this area to upload avatar
                 </p>
                 <p className="ant-upload-hint">
                   Only support for a single upload.
