@@ -32,7 +32,7 @@ import Account from "../account/Account";
 
 const { Dragger } = Upload;
 const { Title } = Typography;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 
 const rootUrl = getRootUrl();
 
@@ -42,13 +42,19 @@ function CreateExpense(): JSX.Element {
   const [currentPage, setCurrentPage] = useState("expenses");
 
   const [groups, setGroups] = useState([]);
+  const [expenseCategories, setExpenseCategories] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
 
   const [splitMethod, setSplitMethod] = useState("");
+  const [expenseCategoryId, setExpenseCategoryId] = useState("");
+  const [currencyId, setCurrencyId] = useState("");
   const [groupId, setGroupId] = useState("");
   const [image, setImage] = useState({});
 
   useEffect(() => {
     getGroupsRequest();
+    getExpenseCategoriesRequest();
+    getCurrenciesRequest();
   }, []);
 
   const getGroupsRequest = async () => {
@@ -71,6 +77,54 @@ function CreateExpense(): JSX.Element {
 
           if (responseData && responseData.groups) {
             setGroups(responseData.groups);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const getExpenseCategoriesRequest = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get(`${rootUrl}/expense_categories`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.expense_categories) {
+            setExpenseCategories(responseData.expense_categories);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const getCurrenciesRequest = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get(`${rootUrl}/currencies`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.currencies) {
+            setCurrencies(responseData.currencies);
           }
         }
       }
@@ -131,7 +185,9 @@ function CreateExpense(): JSX.Element {
       const userId = localStorage.getItem("userId");
       if (token && userId) {
         const formData = new FormData();
+        formData.append("expense_category_id", expenseCategoryId);
         formData.append("description", description);
+        formData.append("currency_id", currencyId);
         formData.append("amount", amount.toString());
         formData.append("split_method", splitMethod);
         formData.append("user_id", userId);
@@ -163,6 +219,16 @@ function CreateExpense(): JSX.Element {
   const onChange = (value: any) => {
     console.log("selected = ", value);
     setSplitMethod(value);
+  };
+
+  const onExpenseCategoryChange = (value: any) => {
+    console.log("selected expenseCategory = ", value);
+    setExpenseCategoryId(value);
+  };
+
+  const onCurrencyChange = (value: any) => {
+    console.log("selected currency = ", value);
+    setCurrencyId(value);
   };
 
   const onGroupChange = (value: any) => {
@@ -260,6 +326,26 @@ function CreateExpense(): JSX.Element {
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
+              <Form.Item>
+                <Select
+                  showSearch
+                  style={{ width: "100%" }}
+                  placeholder="Select expense category"
+                  optionFilterProp="children"
+                  onChange={onExpenseCategoryChange}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onSearch={onSearch}
+                  filterOption={(input: string, option: any) =>
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {renderExpenseCategoryOptions()}
+                </Select>
+              </Form.Item>
+
               <Form.Item
                 label="Description"
                 name="description"
@@ -268,6 +354,26 @@ function CreateExpense(): JSX.Element {
                 ]}
               >
                 <Input />
+              </Form.Item>
+
+              <Form.Item>
+                <Select
+                  showSearch
+                  style={{ width: "100%" }}
+                  placeholder="Select currency"
+                  optionFilterProp="children"
+                  onChange={onCurrencyChange}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onSearch={onSearch}
+                  filterOption={(input: string, option: any) =>
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {renderCurrencyOptions()}
+                </Select>
               </Form.Item>
 
               <Form.Item
@@ -360,6 +466,46 @@ function CreateExpense(): JSX.Element {
       </div>
     );
     return expenseView;
+  };
+
+  const renderExpenseCategoryOptions = () => {
+    let expenseCategoryOptions = null;
+
+    if (expenseCategories) {
+      expenseCategoryOptions = Object.entries(expenseCategories).map(
+        ([key, value]: any, i: number) => {
+          return (
+            <OptGroup key={`${key}-${i}`} label={key}>
+              {value.map((item: any, i: number) => {
+                return (
+                  <Option key={`${item.id}-${i}`} value={item.id}>
+                    {item.name}
+                  </Option>
+                );
+              })}
+            </OptGroup>
+          );
+        }
+      );
+    }
+
+    return expenseCategoryOptions;
+  };
+
+  const renderCurrencyOptions = () => {
+    let currencyOptions = null;
+
+    if (currencies) {
+      currencyOptions = currencies.map((currency: any, i: number) => {
+        return (
+          <Option key={i} value={currency.id}>
+            {currency.name}
+          </Option>
+        );
+      });
+    }
+
+    return currencyOptions;
   };
 
   const renderGroupOptions = () => {
