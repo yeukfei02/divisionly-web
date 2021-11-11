@@ -326,67 +326,80 @@ function CreateExpense(): JSX.Element {
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
-              <Form.Item>
-                <Select
-                  showSearch
-                  style={{ width: "100%" }}
-                  placeholder="Select expense category"
-                  optionFilterProp="children"
-                  onChange={onExpenseCategoryChange}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                  onSearch={onSearch}
-                  filterOption={(input: string, option: any) =>
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {renderExpenseCategoryOptions()}
-                </Select>
-              </Form.Item>
+              <Row>
+                <Col span={12} className="p-1">
+                  <Form.Item>
+                    <Select
+                      showSearch
+                      style={{ width: "100%" }}
+                      placeholder="Select expense category"
+                      optionFilterProp="children"
+                      onChange={onExpenseCategoryChange}
+                      onFocus={onFocus}
+                      onBlur={onBlur}
+                      onSearch={onSearch}
+                      filterOption={(input: string, option: any) =>
+                        option.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {renderExpenseCategoryOptions()}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12} className="p-1">
+                  <Form.Item
+                    label="Description"
+                    name="description"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter your description",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
 
-              <Form.Item
-                label="Description"
-                name="description"
-                rules={[
-                  { required: true, message: "Please enter your description" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+              <Row>
+                <Col span={12} className="p-1">
+                  <Form.Item>
+                    <Select
+                      showSearch
+                      style={{ width: "100%" }}
+                      placeholder="Select currency"
+                      optionFilterProp="children"
+                      onChange={onCurrencyChange}
+                      onFocus={onFocus}
+                      onBlur={onBlur}
+                      onSearch={onSearch}
+                      filterOption={(input: string, option: any) =>
+                        option.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {renderCurrencyOptions()}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12} className="p-1">
+                  <Form.Item
+                    label="Amount"
+                    name="amount"
+                    rules={[
+                      { required: true, message: "Please enter your amount" },
+                    ]}
+                  >
+                    <InputNumber style={{ width: "100%" }} />
+                  </Form.Item>
+                </Col>
+              </Row>
 
-              <Form.Item>
-                <Select
-                  showSearch
-                  style={{ width: "100%" }}
-                  placeholder="Select currency"
-                  optionFilterProp="children"
-                  onChange={onCurrencyChange}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                  onSearch={onSearch}
-                  filterOption={(input: string, option: any) =>
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {renderCurrencyOptions()}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label="Amount"
-                name="amount"
-                rules={[
-                  { required: true, message: "Please enter your amount" },
-                ]}
-              >
-                <InputNumber style={{ width: "100%" }} />
-              </Form.Item>
-
-              <Form.Item>
+              <Form.Item className="p-1">
                 <Select
                   showSearch
                   style={{ width: "100%" }}
@@ -417,7 +430,7 @@ function CreateExpense(): JSX.Element {
                 </Select>
               </Form.Item>
 
-              <Form.Item>
+              <Form.Item className="p-1">
                 <Select
                   showSearch
                   style={{ width: "100%" }}
