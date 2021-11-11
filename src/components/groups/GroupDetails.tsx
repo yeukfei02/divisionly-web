@@ -74,12 +74,12 @@ function GroupDetails(): JSX.Element {
           navigate(`/dashboard/friends`);
           break;
         case "3":
-          setCurrentPage("activities");
-          navigate(`/dashboard/activities`);
-          break;
-        case "4":
           setCurrentPage("expenses");
           navigate(`/dashboard/expenses`);
+          break;
+        case "4":
+          setCurrentPage("activities");
+          navigate(`/dashboard/activities`);
           break;
         case "5":
           setCurrentPage("account");
@@ -158,11 +158,11 @@ function GroupDetails(): JSX.Element {
             <Menu.Item key="2" icon={<UserOutlined />}>
               Friends
             </Menu.Item>
-            <Menu.Item key="3" icon={<MenuOutlined />}>
-              Activity
-            </Menu.Item>
-            <Menu.Item key="4" icon={<DollarOutlined />}>
+            <Menu.Item key="3" icon={<DollarOutlined />}>
               Expense
+            </Menu.Item>
+            <Menu.Item key="4" icon={<MenuOutlined />}>
+              Activity
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
