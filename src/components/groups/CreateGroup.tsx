@@ -31,6 +31,7 @@ import Expense from "../expense/Expense";
 
 const { Dragger } = Upload;
 const { Title } = Typography;
+const { TextArea } = Input;
 const { Option } = Select;
 
 const rootUrl = getRootUrl();
@@ -232,7 +233,7 @@ function CreateGroup(): JSX.Element {
                   { required: true, message: "Please enter your description" },
                 ]}
               >
-                <Input />
+                <TextArea rows={5} />
               </Form.Item>
 
               <Form.Item>

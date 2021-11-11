@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Form, Input, Button, Image, Typography } from "antd";
+import {
+  Row,
+  Col,
+  Menu,
+  Form,
+  Input,
+  Button,
+  Image,
+  Typography,
+  message,
+} from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -83,9 +93,13 @@ function Account(): JSX.Element {
       if (response && response.status === 200) {
         const responseData = response.data;
         console.log("responseData = ", responseData);
+
+        message.success(`Change password success`);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("error = ", e);
+
+      message.error(`Change password fail, error = ${e.message}`);
     }
   };
 

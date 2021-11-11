@@ -32,6 +32,7 @@ import Account from "../account/Account";
 
 const { Dragger } = Upload;
 const { Title } = Typography;
+const { TextArea } = Input;
 const { Option, OptGroup } = Select;
 
 const rootUrl = getRootUrl();
@@ -396,7 +397,7 @@ function CreateExpense(): JSX.Element {
                       },
                     ]}
                   >
-                    <Input />
+                    <TextArea rows={5} />
                   </Form.Item>
                 </Col>
               </Row>

@@ -31,6 +31,7 @@ import Account from "../account/Account";
 
 const { Dragger } = Upload;
 const { Title } = Typography;
+const { TextArea } = Input;
 
 const rootUrl = getRootUrl();
 
@@ -214,7 +215,7 @@ function CreateFriend(): JSX.Element {
                   { required: true, message: "Please enter your description" },
                 ]}
               >
-                <Input />
+                <TextArea rows={5} />
               </Form.Item>
 
               <Form.Item

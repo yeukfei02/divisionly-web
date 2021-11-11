@@ -32,6 +32,7 @@ import Account from "../account/Account";
 
 const { Dragger } = Upload;
 const { Title } = Typography;
+const { TextArea } = Input;
 const { Option, OptGroup } = Select;
 
 const rootUrl = getRootUrl();
@@ -239,12 +240,12 @@ function EditExpense(): JSX.Element {
           const responseData = response.data;
           console.log("responseData = ", responseData);
 
-          message.success("Update Expense success");
+          message.success("Edit Expense success");
         }
       }
     } catch (e: any) {
       console.log("error = ", e);
-      message.error(`Update Expense fail, error = ${e.message}`);
+      message.error(`Edit Expense fail, error = ${e.message}`);
     }
   };
 
@@ -396,7 +397,7 @@ function EditExpense(): JSX.Element {
                       },
                     ]}
                   >
-                    <Input />
+                    <TextArea rows={5} />
                   </Form.Item>
                 </Col>
               </Row>
