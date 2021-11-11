@@ -41,6 +41,7 @@ function CreateExpense(): JSX.Element {
 
   const [currentPage, setCurrentPage] = useState("expenses");
 
+  const [friends, setFriends] = useState([]);
   const [groups, setGroups] = useState([]);
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [currencies, setCurrencies] = useState([]);
@@ -48,14 +49,44 @@ function CreateExpense(): JSX.Element {
   const [splitMethod, setSplitMethod] = useState("");
   const [expenseCategoryId, setExpenseCategoryId] = useState("");
   const [currencyId, setCurrencyId] = useState("");
+  const [friendId, setFriendId] = useState("");
   const [groupId, setGroupId] = useState("");
   const [image, setImage] = useState({});
 
   useEffect(() => {
+    getFriendsRequest();
     getGroupsRequest();
     getExpenseCategoriesRequest();
     getCurrenciesRequest();
   }, []);
+
+  const getFriendsRequest = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        const response = await axios.get(`${rootUrl}/friends`, {
+          params: {
+            user_id: userId,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.friends) {
+            setFriends(responseData.friends);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
 
   const getGroupsRequest = async () => {
     try {
@@ -191,6 +222,7 @@ function CreateExpense(): JSX.Element {
         formData.append("amount", amount.toString());
         formData.append("split_method", splitMethod);
         formData.append("user_id", userId);
+        formData.append("friend_id", friendId);
         formData.append("group_id", groupId);
         formData.append("image", image as any);
 
@@ -229,6 +261,11 @@ function CreateExpense(): JSX.Element {
   const onCurrencyChange = (value: any) => {
     console.log("selected currency = ", value);
     setCurrencyId(value);
+  };
+
+  const onFriendChange = (value: any) => {
+    console.log("selected friend = ", value);
+    setFriendId(value);
   };
 
   const onGroupChange = (value: any) => {
@@ -330,7 +367,7 @@ function CreateExpense(): JSX.Element {
                 <Col span={12} className="p-1">
                   <Form.Item>
                     <Select
-                      showSearch
+                      // showSearch
                       style={{ width: "100%" }}
                       placeholder="Select expense category"
                       optionFilterProp="children"
@@ -434,6 +471,26 @@ function CreateExpense(): JSX.Element {
                 <Select
                   showSearch
                   style={{ width: "100%" }}
+                  placeholder="Select friend"
+                  optionFilterProp="children"
+                  onChange={onFriendChange}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onSearch={onSearch}
+                  filterOption={(input: string, option: any) =>
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {renderFriendOptions()}
+                </Select>
+              </Form.Item>
+
+              <Form.Item className="p-1">
+                <Select
+                  showSearch
+                  style={{ width: "100%" }}
                   placeholder="Select group"
                   optionFilterProp="children"
                   onChange={onGroupChange}
@@ -519,6 +576,22 @@ function CreateExpense(): JSX.Element {
     }
 
     return currencyOptions;
+  };
+
+  const renderFriendOptions = () => {
+    let friendOptions = null;
+
+    if (friends) {
+      friendOptions = friends.map((friend: any, i: number) => {
+        return (
+          <Option key={i} value={friend.id}>
+            {friend.name}
+          </Option>
+        );
+      });
+    }
+
+    return friendOptions;
   };
 
   const renderGroupOptions = () => {
