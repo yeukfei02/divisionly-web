@@ -64,6 +64,17 @@ function Expense(): JSX.Element {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (description: string, record: any) => {
+        const id = record.id;
+        return (
+          <a
+            className="details-link text-decoration-underline"
+            onClick={() => handleNameClick(id)}
+          >
+            {description}
+          </a>
+        );
+      },
     },
     {
       title: "Amount",
@@ -133,9 +144,15 @@ function Expense(): JSX.Element {
     },
   ];
 
+  const handleNameClick = (id: string) => {
+    if (id) {
+      navigate(`/dashboard/expenses/${id}`);
+    }
+  };
+
   const handleEditClick = (id: string) => {
     if (id) {
-      console.log("id = ", id);
+      navigate(`/dashboard/expenses/${id}/edit`);
     }
   };
 

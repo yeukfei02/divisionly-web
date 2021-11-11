@@ -36,7 +36,7 @@ const { Option, OptGroup } = Select;
 
 const rootUrl = getRootUrl();
 
-function CreateExpense(): JSX.Element {
+function EditExpense(): JSX.Element {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState("expenses");
@@ -197,7 +197,7 @@ function CreateExpense(): JSX.Element {
       const description = values.description;
       const amount = values.amount;
       if (description && amount && splitMethod && image) {
-        await createExpenseRequest(description, amount, splitMethod);
+        await updateExpenseRequest(description, amount, splitMethod);
       }
     }
   };
@@ -206,7 +206,7 @@ function CreateExpense(): JSX.Element {
     console.log("error = ", errorInfo);
   };
 
-  const createExpenseRequest = async (
+  const updateExpenseRequest = async (
     description: string,
     amount: number,
     splitMethod: string
@@ -239,12 +239,12 @@ function CreateExpense(): JSX.Element {
           const responseData = response.data;
           console.log("responseData = ", responseData);
 
-          message.success("Create Expense success");
+          message.success("Update Expense success");
         }
       }
     } catch (e: any) {
       console.log("error = ", e);
-      message.error(`Create Expense fail, error = ${e.message}`);
+      message.error(`Update Expense fail, error = ${e.message}`);
     }
   };
 
@@ -354,7 +354,7 @@ function CreateExpense(): JSX.Element {
         <div className="d-flex justify-content-center m-5">
           <Card className="p-3 w-100">
             <div className="d-flex justify-content-center my-3">
-              <Title level={3}>Create Expense</Title>
+              <Title level={3}>Edit Expense</Title>
             </div>
             <Form
               name="basic"
@@ -527,7 +527,7 @@ function CreateExpense(): JSX.Element {
                   type="primary"
                   htmlType="submit"
                 >
-                  Create Expense
+                  Edit Expense
                 </Button>
               </Form.Item>
             </Form>
@@ -654,4 +654,4 @@ function CreateExpense(): JSX.Element {
   );
 }
 
-export default CreateExpense;
+export default EditExpense;
