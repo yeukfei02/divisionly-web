@@ -63,7 +63,17 @@ function Activity(): JSX.Element {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      render: (title: string) => <a>{title}</a>,
+      render: (title: string, record: any) => {
+        const id = record.id;
+        return (
+          <a
+            className="details-link text-decoration-underline"
+            onClick={() => handleNameClick(id)}
+          >
+            {title}
+          </a>
+        );
+      },
     },
     {
       title: "Description",
@@ -118,6 +128,12 @@ function Activity(): JSX.Element {
     //   },
     // },
   ];
+
+  const handleNameClick = (id: string) => {
+    if (id) {
+      navigate(`/dashboard/activities/${id}`);
+    }
+  };
 
   // const handleEditClick = (id: string) => {
   //   if (id) {

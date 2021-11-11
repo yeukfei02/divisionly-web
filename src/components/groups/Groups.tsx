@@ -46,7 +46,17 @@ function Groups(): JSX.Element {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (name: string) => <a>{name}</a>,
+      render: (name: string, record: any) => {
+        const id = record.id;
+        return (
+          <a
+            className="details-link text-decoration-underline"
+            onClick={() => handleNameClick(id)}
+          >
+            {name}
+          </a>
+        );
+      },
     },
     {
       title: "Description",
@@ -165,9 +175,15 @@ function Groups(): JSX.Element {
     }
   };
 
+  const handleNameClick = (id: string) => {
+    if (id) {
+      navigate(`/dashboard/groups/${id}`);
+    }
+  };
+
   const handleEditClick = (id: string) => {
     if (id) {
-      console.log("id = ", id);
+      navigate(`/dashboard/groups/${id}/edit`);
     }
   };
 
