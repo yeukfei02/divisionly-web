@@ -20,7 +20,7 @@ import {
   SettingOutlined,
   InboxOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
@@ -31,12 +31,19 @@ import Expense from "../expense/Expense";
 
 const { Dragger } = Upload;
 const { Title } = Typography;
+const { TextArea } = Input;
 const { Option } = Select;
 
 const rootUrl = getRootUrl();
 
 function EditGroup(): JSX.Element {
   const navigate = useNavigate();
+  const urlParams = useParams();
+
+  let id = "";
+  if (urlParams && urlParams.id) {
+    id = urlParams.id;
+  }
 
   const [currentPage, setCurrentPage] = useState("groups");
   const [groupType, setGroupType] = useState("");
@@ -102,7 +109,7 @@ function EditGroup(): JSX.Element {
 
         const response = await axios({
           method: "put",
-          url: `${rootUrl}/groups`,
+          url: `${rootUrl}/groups/${id}`,
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -113,12 +120,12 @@ function EditGroup(): JSX.Element {
           const responseData = response.data;
           console.log("responseData = ", responseData);
 
-          message.success("Update Group success");
+          message.success("Edit Group success");
         }
       }
     } catch (e: any) {
       console.log("error = ", e);
-      message.error(`Update Group fail, error = ${e.message}`);
+      message.error(`Edit Group fail, error = ${e.message}`);
     }
   };
 
@@ -153,12 +160,12 @@ function EditGroup(): JSX.Element {
           navigate(`/dashboard/friends`);
           break;
         case "3":
-          setCurrentPage("activities");
-          navigate(`/dashboard/activities`);
-          break;
-        case "4":
           setCurrentPage("expenses");
           navigate(`/dashboard/expenses`);
+          break;
+        case "4":
+          setCurrentPage("activities");
+          navigate(`/dashboard/activities`);
           break;
         case "5":
           setCurrentPage("account");
@@ -232,7 +239,7 @@ function EditGroup(): JSX.Element {
                   { required: true, message: "Please enter your description" },
                 ]}
               >
-                <Input />
+                <TextArea rows={5} />
               </Form.Item>
 
               <Form.Item>
@@ -309,11 +316,11 @@ function EditGroup(): JSX.Element {
             <Menu.Item key="2" icon={<UserOutlined />}>
               Friends
             </Menu.Item>
-            <Menu.Item key="3" icon={<MenuOutlined />}>
-              Activity
-            </Menu.Item>
-            <Menu.Item key="4" icon={<DollarOutlined />}>
+            <Menu.Item key="3" icon={<DollarOutlined />}>
               Expense
+            </Menu.Item>
+            <Menu.Item key="4" icon={<MenuOutlined />}>
+              Activity
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
