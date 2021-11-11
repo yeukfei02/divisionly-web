@@ -78,7 +78,7 @@ function Activity(): JSX.Element {
         let imageView = null;
 
         if (image && image.url) {
-          imageView = <Image width={200} src={image.url} />;
+          imageView = <Image width={100} src={image.url} />;
         }
 
         return imageView;
