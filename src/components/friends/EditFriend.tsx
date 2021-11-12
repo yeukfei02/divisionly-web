@@ -20,7 +20,7 @@ import {
   SettingOutlined,
   InboxOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
@@ -37,6 +37,12 @@ const rootUrl = getRootUrl();
 
 function EditFriend(): JSX.Element {
   const navigate = useNavigate();
+  const urlParams = useParams();
+
+  let id = "";
+  if (urlParams && urlParams.id) {
+    id = urlParams.id;
+  }
 
   const [currentPage, setCurrentPage] = useState("friends");
   const [avatar, setAvatar] = useState({});
@@ -101,8 +107,8 @@ function EditFriend(): JSX.Element {
         formData.append("avatar", avatar as any);
 
         const response = await axios({
-          method: "post",
-          url: `${rootUrl}/friends`,
+          method: "put",
+          url: `${rootUrl}/friends/${id}`,
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -182,15 +188,15 @@ function EditFriend(): JSX.Element {
   const renderFriendsView = () => {
     const friendsView = (
       <div>
-        <div className="d-flex justify-content-start mx-5 my-3">
+        <div className="mx-5 my-3 d-flex justify-content-start">
           <Button type="default" onClick={handleBackButtonClick}>
             Back
           </Button>
         </div>
 
-        <div className="d-flex justify-content-center m-5">
+        <div className="m-5 d-flex justify-content-center">
           <Card className="p-3 w-100">
-            <div className="d-flex justify-content-center my-3">
+            <div className="my-3 d-flex justify-content-center">
               <Title level={3}>Edit Friend</Title>
             </div>
             <Form
