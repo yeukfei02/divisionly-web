@@ -88,7 +88,7 @@ function Activity(): JSX.Element {
         let imageView = null;
 
         if (image && image.url) {
-          imageView = <Image width={100} src={image.url} />;
+          imageView = <Image width={100} src={image.url} preview={false} />;
         }
 
         return imageView;
@@ -226,7 +226,7 @@ function Activity(): JSX.Element {
   const renderActivityView = () => {
     const activityView = (
       <div>
-        {/* <div className="d-flex justify-content-end mx-5 my-3">
+        {/* <div className="mx-5 my-3 d-flex justify-content-end">
           <Button type="primary" onClick={handleCreateActivityClick}>
             Create Activity
           </Button>

@@ -21,7 +21,7 @@ import {
   SettingOutlined,
   InboxOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
@@ -39,6 +39,12 @@ const rootUrl = getRootUrl();
 
 function EditExpense(): JSX.Element {
   const navigate = useNavigate();
+  const urlParams = useParams();
+
+  let id = "";
+  if (urlParams && urlParams.id) {
+    id = urlParams.id;
+  }
 
   const [currentPage, setCurrentPage] = useState("expenses");
 
@@ -228,8 +234,8 @@ function EditExpense(): JSX.Element {
         formData.append("image", image as any);
 
         const response = await axios({
-          method: "post",
-          url: `${rootUrl}/expenses`,
+          method: "put",
+          url: `${rootUrl}/expenses/${id}`,
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -346,15 +352,15 @@ function EditExpense(): JSX.Element {
   const renderExpenseView = () => {
     const expenseView = (
       <div>
-        <div className="d-flex justify-content-start mx-5 my-3">
+        <div className="mx-5 my-3 d-flex justify-content-start">
           <Button type="default" onClick={handleBackButtonClick}>
             Back
           </Button>
         </div>
 
-        <div className="d-flex justify-content-center m-5">
+        <div className="m-5 d-flex justify-content-center">
           <Card className="p-3 w-100">
-            <div className="d-flex justify-content-center my-3">
+            <div className="my-3 d-flex justify-content-center">
               <Title level={3}>Edit Expense</Title>
             </div>
             <Form
