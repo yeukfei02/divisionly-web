@@ -165,17 +165,24 @@ function Expense(): JSX.Element {
   const deleteExpenseByIdRequest = async (id: string) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.delete(`${rootUrl}/expenses/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response && response.status === 200) {
-        const responseData = response.data;
-        console.log("responseData = ", responseData);
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        const data = {
+          id: id,
+          user_id: userId,
+        };
+        const response = await axios.post(`${rootUrl}/expenses/remove`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
 
-        message.success("Delete Expense success");
-        await getExpenseRequest();
+          message.success("Delete Expense success");
+          await getExpenseRequest();
+        }
       }
     } catch (e: any) {
       console.log("error = ", e);
@@ -244,7 +251,7 @@ function Expense(): JSX.Element {
   const renderExpenseView = () => {
     const expenseView = (
       <div>
-        <div className="d-flex justify-content-end mx-5 my-3">
+        <div className="mx-5 my-3 d-flex justify-content-end">
           <Button type="primary" onClick={handleCreateExpenseClick}>
             Create Expense
           </Button>
