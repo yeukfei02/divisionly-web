@@ -110,6 +110,26 @@ function Expense(): JSX.Element {
       },
     },
     {
+      title: "Expense category",
+      dataIndex: "expense_category",
+      key: "expense_category",
+      render: (expense_category: any) => {
+        let expenseCategoryView = null;
+
+        if (
+          expense_category &&
+          expense_category.image &&
+          expense_category.image.url
+        ) {
+          expenseCategoryView = (
+            <Image width={200} src={expense_category.image.url} />
+          );
+        }
+
+        return expenseCategoryView;
+      },
+    },
+    {
       title: "Created at",
       dataIndex: "created_at",
       key: "created_at",

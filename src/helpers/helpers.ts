@@ -12,3 +12,13 @@ export const getRootUrl = (): string => {
 
   return rootUrl;
 };
+
+export const capitalizeFirstLetter = (text: string): string => {
+  let result = "";
+
+  if (text) {
+    result = text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  return result;
+};

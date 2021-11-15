@@ -16,7 +16,7 @@ import Friends from "../friends/Friends";
 import Expense from "../expense/Expense";
 import Account from "../account/Account";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const rootUrl = getRootUrl();
 
@@ -30,6 +30,7 @@ function ActivityDetails(): JSX.Element {
   }
 
   const [currentPage, setCurrentPage] = useState("activities");
+  const [activity, setActivity] = useState<any>("");
 
   useEffect(() => {
     if (id) {
@@ -51,7 +52,7 @@ function ActivityDetails(): JSX.Element {
           console.log("responseData = ", responseData);
 
           if (responseData && responseData.activity) {
-            console.log("responseData.activity = ", responseData.activity);
+            setActivity(responseData.activity);
           }
         }
       }
@@ -131,11 +132,34 @@ function ActivityDetails(): JSX.Element {
             <div className="d-flex justify-content-center my-3">
               <Title level={3}>Activity Details</Title>
             </div>
+
+            {renderActivityDetails()}
           </Card>
         </div>
       </div>
     );
     return activityView;
+  };
+
+  const renderActivityDetails = () => {
+    let activityDetails = null;
+
+    if (activity) {
+      activityDetails = (
+        <div className="d-flex flex-column my-3">
+          <div className="my-3">
+            <Title level={4}>Title:</Title>
+            <Text>{activity.title}</Text>
+          </div>
+          <div className="my-3">
+            <Title level={4}>Description:</Title>
+            <Text>{activity.description}</Text>
+          </div>
+        </div>
+      );
+    }
+
+    return activityDetails;
   };
 
   const handleBackButtonClick = () => {
