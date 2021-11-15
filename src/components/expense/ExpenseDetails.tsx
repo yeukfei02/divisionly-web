@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Typography, Button, Card, Menu } from "antd";
+import { Row, Col, Typography, Button, Card, Menu, Image } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -16,7 +16,7 @@ import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const rootUrl = getRootUrl();
 
@@ -30,6 +30,7 @@ function ExpenseDetails(): JSX.Element {
   }
 
   const [currentPage, setCurrentPage] = useState("expenses");
+  const [expense, setExpense] = useState<any>({});
 
   useEffect(() => {
     if (id) {
@@ -51,7 +52,7 @@ function ExpenseDetails(): JSX.Element {
           console.log("responseData = ", responseData);
 
           if (responseData && responseData.expense) {
-            console.log("responseData.expense = ", responseData.expense);
+            setExpense(responseData.expense);
           }
         }
       }
@@ -131,11 +132,93 @@ function ExpenseDetails(): JSX.Element {
             <div className="d-flex justify-content-center my-3">
               <Title level={3}>Expense Details</Title>
             </div>
+
+            {renderExpenseDetails()}
           </Card>
         </div>
       </div>
     );
     return expenseView;
+  };
+
+  const renderExpenseDetails = () => {
+    let expenseDetails = null;
+
+    if (expense) {
+      expenseDetails = (
+        <div className="d-flex flex-column my-3">
+          <div className="my-3">
+            <Title level={4}>Description:</Title>
+            <Text>{expense.description}</Text>
+          </div>
+          <div className="my-3">
+            <Title level={4}>Amount:</Title>
+            <Text>{expense.amount}</Text>
+          </div>
+          <div className="my-3">
+            <Title level={4}>Split method:</Title>
+            <Text>
+              {expense.split_method
+                ? expense.split_method.replace(/[_]/g, " ")
+                : ""}
+            </Text>
+          </div>
+          <div
+            className="my-3"
+            onClick={() =>
+              goToFriendDetails(expense.friend ? expense.friend.id : "")
+            }
+          >
+            <Title level={4}>Friend:</Title>
+            <a className="display-link">
+              {expense.friend ? expense.friend.id : ""}
+            </a>
+          </div>
+          <div
+            className="my-3"
+            onClick={() =>
+              goToGroupDetails(expense.group ? expense.group.id : "")
+            }
+          >
+            <Title level={4}>Group:</Title>
+            <a className="display-link">
+              {expense.group ? expense.group.id : ""}
+            </a>
+          </div>
+          {renderImage(expense)}
+        </div>
+      );
+    }
+
+    return expenseDetails;
+  };
+
+  const renderImage = (expense: any) => {
+    let image = null;
+
+    if (expense && expense.image) {
+      image = (
+        <div className="d-flex flex-column my-3">
+          <Title level={4}>Image: </Title>
+          <Image width={300} src={expense.image.url} />
+
+          <div className="my-3">
+            <Title level={5}>Filename: </Title>
+            <Text>{expense.image.filename}</Text>
+          </div>
+        </div>
+      );
+    }
+
+    return image;
+  };
+
+  const goToFriendDetails = (id: string) => {
+    navigate(`/dashboard/friends/${id}`);
+  };
+
+  const goToGroupDetails = (id: string) => {
+    navigate(`/dashboard/groups/${id}`);
   };
 
   const handleBackButtonClick = () => {

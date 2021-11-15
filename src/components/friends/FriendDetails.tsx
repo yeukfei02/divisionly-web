@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Typography, Button, Card, Menu } from "antd";
+import { Row, Col, Typography, Button, Card, Menu, Image } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -16,7 +16,7 @@ import Activity from "../activity/Activity";
 import Expense from "../expense/Expense";
 import Account from "../account/Account";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const rootUrl = getRootUrl();
 
@@ -30,6 +30,7 @@ function FriendDetails(): JSX.Element {
   }
 
   const [currentPage, setCurrentPage] = useState("friends");
+  const [friend, setFriend] = useState<any>({});
 
   useEffect(() => {
     if (id) {
@@ -51,7 +52,7 @@ function FriendDetails(): JSX.Element {
           console.log("responseData = ", responseData);
 
           if (responseData && responseData.friend) {
-            console.log("responseData.friend = ", responseData.friend);
+            setFriend(responseData.friend);
           }
         }
       }
@@ -131,11 +132,59 @@ function FriendDetails(): JSX.Element {
             <div className="d-flex justify-content-center my-3">
               <Title level={3}>Friend Details</Title>
             </div>
+
+            {renderFriendDetails()}
           </Card>
         </div>
       </div>
     );
     return friendsView;
+  };
+
+  const renderFriendDetails = () => {
+    let friendDetails = null;
+
+    if (friend) {
+      friendDetails = (
+        <div className="d-flex flex-column my-3">
+          <div className="my-3">
+            <Title level={4}>Name:</Title>
+            <Text>{friend.name}</Text>
+          </div>
+          <div className="my-3">
+            <Title level={4}>Description:</Title>
+            <Text>{friend.description}</Text>
+          </div>
+          <div className="my-3">
+            <Title level={4}>Phone number:</Title>
+            <Text>{friend.phone_number}</Text>
+          </div>
+          {renderImage(friend)}
+        </div>
+      );
+    }
+
+    return friendDetails;
+  };
+
+  const renderImage = (friend: any) => {
+    let image = null;
+
+    if (friend && friend.avatar) {
+      image = (
+        <div className="d-flex flex-column my-3">
+          <Title level={4}>Avatar: </Title>
+          <Image width={300} src={friend.avatar.url} />
+
+          <div className="my-3">
+            <Title level={5}>Filename: </Title>
+            <Text>{friend.avatar.filename}</Text>
+          </div>
+        </div>
+      );
+    }
+
+    return image;
   };
 
   const handleBackButtonClick = () => {

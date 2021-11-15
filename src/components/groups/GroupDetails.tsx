@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Typography, Button, Card, Menu } from "antd";
+import { Row, Col, Typography, Button, Card, Menu, Image } from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -9,14 +9,14 @@ import {
 } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { getRootUrl } from "../../helpers/helpers";
+import { getRootUrl, capitalizeFirstLetter } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
 import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
 import Expense from "../expense/Expense";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const rootUrl = getRootUrl();
 
@@ -30,6 +30,7 @@ function GroupDetails(): JSX.Element {
   }
 
   const [currentPage, setCurrentPage] = useState("groups");
+  const [group, setGroup] = useState<any>({});
 
   useEffect(() => {
     if (id) {
@@ -51,7 +52,7 @@ function GroupDetails(): JSX.Element {
           console.log("responseData = ", responseData);
 
           if (responseData && responseData.group) {
-            console.log("responseData.group = ", responseData.group);
+            setGroup(responseData.group);
           }
         }
       }
@@ -131,11 +132,59 @@ function GroupDetails(): JSX.Element {
             <div className="d-flex justify-content-center my-3">
               <Title level={3}>Group Details</Title>
             </div>
+
+            {renderGroupDetails()}
           </Card>
         </div>
       </div>
     );
     return groupsView;
+  };
+
+  const renderGroupDetails = () => {
+    let groupDetails = null;
+
+    if (group) {
+      groupDetails = (
+        <div className="d-flex flex-column my-3">
+          <div className="my-3">
+            <Title level={4}>Name:</Title>
+            <Text>{group.name}</Text>
+          </div>
+          <div className="my-3">
+            <Title level={4}>Description:</Title>
+            <Text>{group.description}</Text>
+          </div>
+          <div className="my-3">
+            <Title level={4}>Group type: </Title>
+            <Text>{capitalizeFirstLetter(group.group_type)}</Text>
+          </div>
+          {renderImage(group)}
+        </div>
+      );
+    }
+
+    return groupDetails;
+  };
+
+  const renderImage = (group: any) => {
+    let image = null;
+
+    if (group && group.image) {
+      image = (
+        <div className="d-flex flex-column my-3">
+          <Title level={4}>Image: </Title>
+          <Image width={300} src={group.image.url} />
+
+          <div className="my-3">
+            <Title level={5}>Filename: </Title>
+            <Text>{group.image.filename}</Text>
+          </div>
+        </div>
+      );
+    }
+
+    return image;
   };
 
   const handleBackButtonClick = () => {
