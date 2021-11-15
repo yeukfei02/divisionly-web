@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Button, Table, Space, Image, message } from "antd";
+import {
+  Row,
+  Col,
+  Menu,
+  Button,
+  Table,
+  Space,
+  Image,
+  Typography,
+  message,
+} from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -18,6 +28,8 @@ import Groups from "../groups/Groups";
 import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
+
+const { Text } = Typography;
 
 const rootUrl = getRootUrl();
 
@@ -122,7 +134,20 @@ function Expense(): JSX.Element {
           expense_category.image.url
         ) {
           expenseCategoryView = (
-            <Image width={200} src={expense_category.image.url} />
+            <div className="d-flex justify-content-center">
+              <div className="d-flex flex-column">
+                <div className="d-flex justify-content-center">
+                  <Image
+                    width={50}
+                    src={expense_category.image.url}
+                    preview={false}
+                  />
+                </div>
+                <Text className="text-center my-2">
+                  {expense_category.name}
+                </Text>
+              </div>
+            </div>
           );
         }
 
