@@ -185,12 +185,43 @@ function ExpenseDetails(): JSX.Element {
               {expense.group ? expense.group.id : ""}
             </a>
           </div>
+          {renderExpenseCategoryImage(expense)}
+
+          <div className="my-3">
+            <Title level={4}>Currency:</Title>
+            <Text>{expense.currency ? expense.currency.name : ""}</Text>
+          </div>
+
           {renderImage(expense)}
         </div>
       );
     }
 
     return expenseDetails;
+  };
+
+  const renderExpenseCategoryImage = (expense: any) => {
+    let image = null;
+
+    if (expense && expense.expense_category && expense.expense_category.image) {
+      image = (
+        <div className="d-flex flex-column my-3">
+          <Title level={4}>Expense category: </Title>
+          <Image
+            width={100}
+            src={expense.expense_category.image.url}
+            preview={false}
+          />
+
+          <div className="my-3">
+            <Title level={5}>Filename: </Title>
+            <Text>{expense.expense_category.image.filename}</Text>
+          </div>
+        </div>
+      );
+    }
+
+    return image;
   };
 
   const renderImage = (expense: any) => {

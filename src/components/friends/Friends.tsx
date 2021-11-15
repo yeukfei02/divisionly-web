@@ -26,12 +26,16 @@ function Friends(): JSX.Element {
 
   const [currentPage, setCurrentPage] = useState("friends");
   const [data, setData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    getFriendsRequest();
-  }, []);
+    getAllFriendsRequest();
+    getFriendsRequest(page, pageSize);
+  }, [page, pageSize]);
 
-  const getFriendsRequest = async () => {
+  const getAllFriendsRequest = async () => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -39,6 +43,37 @@ function Friends(): JSX.Element {
         const response = await axios.get(`${rootUrl}/friends`, {
           params: {
             user_id: userId,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.friends) {
+            setData(responseData.friends);
+            setTotalCount(responseData.friends.total_count);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const getFriendsRequest = async (page: number, pageSize: number) => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        const response = await axios.get(`${rootUrl}/friends`, {
+          params: {
+            user_id: userId,
+            page: page,
+            page_size: pageSize,
           },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -172,7 +207,7 @@ function Friends(): JSX.Element {
           console.log("responseData = ", responseData);
 
           message.success("Delete Friend success");
-          await getFriendsRequest();
+          await getFriendsRequest(page, pageSize);
         }
       }
     } catch (e: any) {
@@ -249,7 +284,29 @@ function Friends(): JSX.Element {
         </div>
 
         <div className="m-5">
-          <Table columns={columns} dataSource={data} />
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{
+              total: totalCount,
+              pageSizeOptions: ["10", "20", "50"],
+              showSizeChanger: true,
+              onChange: (page: number, pageSize: number | undefined) => {
+                console.log("page = ", page);
+                console.log("pageSize = ", pageSize);
+
+                if (page) setPage(page);
+                if (pageSize) setPageSize(pageSize);
+              },
+              onShowSizeChange: (current: number, size: number) => {
+                console.log("current = ", current);
+                console.log("size = ", size);
+
+                setPage(1);
+                if (size) setPageSize(size);
+              },
+            }}
+          />
         </div>
       </div>
     );

@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu, Button, Table, Space, Image, message } from "antd";
+import {
+  Row,
+  Col,
+  Menu,
+  Button,
+  Table,
+  Space,
+  Image,
+  Typography,
+  message,
+} from "antd";
 import {
   GroupOutlined,
   UserOutlined,
@@ -19,6 +29,8 @@ import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
 
+const { Text } = Typography;
+
 const rootUrl = getRootUrl();
 
 function Expense(): JSX.Element {
@@ -26,12 +38,16 @@ function Expense(): JSX.Element {
 
   const [currentPage, setCurrentPage] = useState("expenses");
   const [data, setData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    getExpenseRequest();
-  }, []);
+    getAllExpenseRequest();
+    getExpenseRequest(page, pageSize);
+  }, [page, pageSize]);
 
-  const getExpenseRequest = async () => {
+  const getAllExpenseRequest = async () => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -40,6 +56,42 @@ function Expense(): JSX.Element {
           params: {
             user_id: userId,
           },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.expenses) {
+            setData(responseData.expenses);
+            setTotalCount(responseData.expenses.total_count);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const getExpenseRequest = async (page: number, pageSize: number) => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        let params = {
+          user_id: userId,
+          page: page,
+          page_size: pageSize,
+        };
+        if (page != 0) {
+          params = Object.assign(params, { page: page });
+        }
+
+        const response = await axios.get(`${rootUrl}/expenses`, {
+          params: params,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -122,7 +174,20 @@ function Expense(): JSX.Element {
           expense_category.image.url
         ) {
           expenseCategoryView = (
-            <Image width={200} src={expense_category.image.url} />
+            <div className="d-flex justify-content-center">
+              <div className="d-flex flex-column">
+                <div className="d-flex justify-content-center">
+                  <Image
+                    width={50}
+                    src={expense_category.image.url}
+                    preview={false}
+                  />
+                </div>
+                <Text className="text-center my-2">
+                  {expense_category.name}
+                </Text>
+              </div>
+            </div>
           );
         }
 
@@ -201,7 +266,7 @@ function Expense(): JSX.Element {
           console.log("responseData = ", responseData);
 
           message.success("Delete Expense success");
-          await getExpenseRequest();
+          await getExpenseRequest(page, pageSize);
         }
       }
     } catch (e: any) {
@@ -278,7 +343,29 @@ function Expense(): JSX.Element {
         </div>
 
         <div className="m-5">
-          <Table columns={columns} dataSource={data} />
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{
+              total: totalCount,
+              pageSizeOptions: ["10", "20", "50"],
+              showSizeChanger: true,
+              onChange: (page: number, pageSize: number | undefined) => {
+                console.log("page = ", page);
+                console.log("pageSize = ", pageSize);
+
+                if (page) setPage(page);
+                if (pageSize) setPageSize(pageSize);
+              },
+              onShowSizeChange: (current: number, size: number) => {
+                console.log("current = ", current);
+                console.log("size = ", size);
+
+                setPage(1);
+                if (size) setPageSize(size);
+              },
+            }}
+          />
         </div>
       </div>
     );
