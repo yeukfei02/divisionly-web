@@ -25,12 +25,16 @@ function Activity(): JSX.Element {
 
   const [currentPage, setCurrentPage] = useState("activities");
   const [data, setData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    getActivityRequest();
-  }, []);
+    getAllActivityRequest();
+    getActivityRequest(page, pageSize);
+  }, [page, pageSize]);
 
-  const getActivityRequest = async () => {
+  const getAllActivityRequest = async () => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -38,6 +42,37 @@ function Activity(): JSX.Element {
         const response = await axios.get(`${rootUrl}/activities`, {
           params: {
             user_id: userId,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.activities) {
+            setData(responseData.activities);
+            setTotalCount(responseData.activities.total_count);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
+    }
+  };
+
+  const getActivityRequest = async (page: number, pageSize: number) => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        const response = await axios.get(`${rootUrl}/activities`, {
+          params: {
+            user_id: userId,
+            page: page,
+            page_size: pageSize,
           },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -233,7 +268,29 @@ function Activity(): JSX.Element {
         </div> */}
 
         <div className="mx-5 my-4">
-          <Table columns={columns} dataSource={data} />
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{
+              total: totalCount,
+              pageSizeOptions: ["10", "20", "50"],
+              showSizeChanger: true,
+              onChange: (page: number, pageSize: number | undefined) => {
+                console.log("page = ", page);
+                console.log("pageSize = ", pageSize);
+
+                if (page) setPage(page);
+                if (pageSize) setPageSize(pageSize);
+              },
+              onShowSizeChange: (current: number, size: number) => {
+                console.log("current = ", current);
+                console.log("size = ", size);
+
+                setPage(1);
+                if (size) setPageSize(size);
+              },
+            }}
+          />
         </div>
       </div>
     );
