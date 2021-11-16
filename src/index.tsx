@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import "antd/dist/antd.css";
 import "./index.css";
 
+// sentry
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN ? process.env.REACT_APP_SENTRY_DSN : "",
   integrations: [new Integrations.BrowserTracing()],
