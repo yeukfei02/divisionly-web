@@ -147,19 +147,43 @@ function ActivityDetails(): JSX.Element {
     if (activity) {
       activityDetails = (
         <div className="d-flex flex-column my-3">
-          <div className="my-3">
-            <Title level={4}>Title:</Title>
-            <Text>{activity.title}</Text>
-          </div>
-          <div className="my-3">
-            <Title level={4}>Description:</Title>
-            <Text>{activity.description}</Text>
-          </div>
+          {renderTitle(activity)}
+          {renderDescription(activity)}
         </div>
       );
     }
 
     return activityDetails;
+  };
+
+  const renderTitle = (activity: any) => {
+    let title = null;
+
+    if (activity && activity.title) {
+      title = (
+        <div className="my-3">
+          <Title level={4}>Title:</Title>
+          <Text>{activity.title}</Text>
+        </div>
+      );
+    }
+
+    return title;
+  };
+
+  const renderDescription = (activity: any) => {
+    let description = null;
+
+    if (activity && activity.description) {
+      description = (
+        <div className="my-3">
+          <Title level={4}>Description:</Title>
+          <Text>{activity.description}</Text>
+        </div>
+      );
+    }
+
+    return description;
   };
 
   const handleBackButtonClick = () => {
