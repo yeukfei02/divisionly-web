@@ -147,24 +147,60 @@ function GroupDetails(): JSX.Element {
     if (group) {
       groupDetails = (
         <div className="d-flex flex-column my-3">
-          <div className="my-3">
-            <Title level={4}>Name:</Title>
-            <Text>{group.name}</Text>
-          </div>
-          <div className="my-3">
-            <Title level={4}>Description:</Title>
-            <Text>{group.description}</Text>
-          </div>
-          <div className="my-3">
-            <Title level={4}>Group type: </Title>
-            <Text>{capitalizeFirstLetter(group.group_type)}</Text>
-          </div>
+          {renderName(group)}
+          {renderDescription(group)}
+          {renderGroupType(group)}
           {renderImage(group)}
         </div>
       );
     }
 
     return groupDetails;
+  };
+
+  const renderName = (group: any) => {
+    let name = null;
+
+    if (group && group.name) {
+      name = (
+        <div className="my-3">
+          <Title level={4}>Name:</Title>
+          <Text>{group.name}</Text>
+        </div>
+      );
+    }
+
+    return name;
+  };
+
+  const renderDescription = (group: any) => {
+    let description = null;
+
+    if (group && group.description) {
+      description = (
+        <div className="my-3">
+          <Title level={4}>Description:</Title>
+          <Text>{group.description}</Text>
+        </div>
+      );
+    }
+
+    return description;
+  };
+
+  const renderGroupType = (group: any) => {
+    let groupType = null;
+
+    if (group && group.group_type) {
+      groupType = (
+        <div className="my-3">
+          <Title level={4}>Group type: </Title>
+          <Text>{capitalizeFirstLetter(group.group_type)}</Text>
+        </div>
+      );
+    }
+
+    return groupType;
   };
 
   const renderImage = (group: any) => {

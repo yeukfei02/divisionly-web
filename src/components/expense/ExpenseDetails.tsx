@@ -147,57 +147,112 @@ function ExpenseDetails(): JSX.Element {
     if (expense) {
       expenseDetails = (
         <div className="d-flex flex-column my-3">
-          <div className="my-3">
-            <Title level={4}>Description:</Title>
-            <Text>{expense.description}</Text>
-          </div>
-          <div className="my-3">
-            <Title level={4}>Amount:</Title>
-            <Text>{expense.amount}</Text>
-          </div>
-          <div className="my-3">
-            <Title level={4}>Split method:</Title>
-            <Text>
-              {expense.split_method
-                ? expense.split_method.replace(/[_]/g, " ")
-                : ""}
-            </Text>
-          </div>
-          <div
-            className="my-3"
-            onClick={() =>
-              goToFriendDetails(expense.friend ? expense.friend.id : "")
-            }
-          >
-            <Title level={4}>Friend:</Title>
-            <a className="display-link">
-              {expense.friend ? expense.friend.id : ""}
-            </a>
-          </div>
-          <div
-            className="my-3"
-            onClick={() =>
-              goToGroupDetails(expense.group ? expense.group.id : "")
-            }
-          >
-            <Title level={4}>Group:</Title>
-            <a className="display-link">
-              {expense.group ? expense.group.id : ""}
-            </a>
-          </div>
+          {renderDescription(expense)}
+          {renderAmount(expense)}
+          {renderSplitMethod(expense)}
+          {renderFriend(expense)}
+          {renderGroup(expense)}
           {renderExpenseCategoryImage(expense)}
-
-          <div className="my-3">
-            <Title level={4}>Currency:</Title>
-            <Text>{expense.currency ? expense.currency.name : ""}</Text>
-          </div>
-
+          {renderCurrency(expense)}
           {renderImage(expense)}
         </div>
       );
     }
 
     return expenseDetails;
+  };
+
+  const renderDescription = (expense: any) => {
+    let description = null;
+
+    if (expense && expense.description) {
+      description = (
+        <div className="my-3">
+          <Title level={4}>Description:</Title>
+          <Text>{expense.description}</Text>
+        </div>
+      );
+    }
+
+    return description;
+  };
+
+  const renderAmount = (expense: any) => {
+    let amount = null;
+
+    if (expense && expense.amount) {
+      amount = (
+        <div className="my-3">
+          <Title level={4}>Amount:</Title>
+          <Text>{expense.amount}</Text>
+        </div>
+      );
+    }
+
+    return amount;
+  };
+
+  const renderSplitMethod = (expense: any) => {
+    let splitMethod = null;
+
+    if (expense && expense.split_method) {
+      splitMethod = (
+        <div className="my-3">
+          <Title level={4}>Split method:</Title>
+          <Text>
+            {expense.split_method
+              ? expense.split_method.replace(/[_]/g, " ")
+              : ""}
+          </Text>
+        </div>
+      );
+    }
+
+    return splitMethod;
+  };
+
+  const renderFriend = (expense: any) => {
+    let friend = null;
+
+    if (expense && expense.friend) {
+      friend = (
+        <div
+          className="my-3"
+          onClick={() =>
+            goToFriendDetails(expense.friend ? expense.friend.id : "")
+          }
+        >
+          <Title level={4}>Friend:</Title>
+          <a className="display-link">
+            {expense.friend ? expense.friend.id : ""}
+          </a>
+        </div>
+      );
+    }
+
+    return friend;
+  };
+
+  const renderGroup = (expense: any) => {
+    let group = null;
+
+    if (expense && expense.group) {
+      group = (
+        <div
+          className="my-3"
+          onClick={() =>
+            goToGroupDetails(expense.group ? expense.group.id : "")
+          }
+        >
+          <Title level={4}>Group:</Title>
+          <a className="display-link">
+            {expense.group ? expense.group.id : ""}
+          </a>
+        </div>
+      );
+    }
+
+    return group;
   };
 
   const renderExpenseCategoryImage = (expense: any) => {
@@ -222,6 +277,21 @@ function ExpenseDetails(): JSX.Element {
     }
 
     return image;
+  };
+
+  const renderCurrency = (expense: any) => {
+    let currency = null;
+
+    if (expense && expense.currency) {
+      currency = (
+        <div className="my-3">
+          <Title level={4}>Currency:</Title>
+          <Text>{expense.currency ? expense.currency.name : ""}</Text>
+        </div>
+      );
+    }
+
+    return currency;
   };
 
   const renderImage = (expense: any) => {

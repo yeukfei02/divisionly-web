@@ -147,24 +147,60 @@ function FriendDetails(): JSX.Element {
     if (friend) {
       friendDetails = (
         <div className="d-flex flex-column my-3">
-          <div className="my-3">
-            <Title level={4}>Name:</Title>
-            <Text>{friend.name}</Text>
-          </div>
-          <div className="my-3">
-            <Title level={4}>Description:</Title>
-            <Text>{friend.description}</Text>
-          </div>
-          <div className="my-3">
-            <Title level={4}>Phone number:</Title>
-            <Text>{friend.phone_number}</Text>
-          </div>
+          {renderName(friend)}
+          {renderDescription(friend)}
+          {renderPhoneNumber(friend)}
           {renderImage(friend)}
         </div>
       );
     }
 
     return friendDetails;
+  };
+
+  const renderName = (friend: any) => {
+    let name = null;
+
+    if (friend && friend.name) {
+      name = (
+        <div className="my-3">
+          <Title level={4}>Name:</Title>
+          <Text>{friend.name}</Text>
+        </div>
+      );
+    }
+
+    return name;
+  };
+
+  const renderDescription = (friend: any) => {
+    let description = null;
+
+    if (friend && friend.description) {
+      description = (
+        <div className="my-3">
+          <Title level={4}>Description:</Title>
+          <Text>{friend.description}</Text>
+        </div>
+      );
+    }
+
+    return description;
+  };
+
+  const renderPhoneNumber = (friend: any) => {
+    let phoneNumber = null;
+
+    if (friend && friend.phone_number) {
+      phoneNumber = (
+        <div className="my-3">
+          <Title level={4}>Phone number:</Title>
+          <Text>{friend.phone_number}</Text>
+        </div>
+      );
+    }
+
+    return phoneNumber;
   };
 
   const renderImage = (friend: any) => {
