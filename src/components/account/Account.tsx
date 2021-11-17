@@ -414,7 +414,7 @@ function Account(): JSX.Element {
 
     if (qrCodeStr) {
       qrCode = (
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center my-3">
           <QRCode value={qrCodeStr} size={150} />
         </div>
       );
