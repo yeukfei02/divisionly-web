@@ -148,6 +148,16 @@ function Expense(): JSX.Element {
       },
     },
     {
+      title: "Your amount",
+      dataIndex: "your_amount",
+      key: "your_amount",
+    },
+    {
+      title: "Owe amount",
+      dataIndex: "owe_amount",
+      key: "owe_amount",
+    },
+    {
       title: "Image",
       dataIndex: "image",
       key: "image",
