@@ -20,6 +20,7 @@ import {
   SettingOutlined,
   InboxOutlined,
 } from "@ant-design/icons";
+import QRCode from "qrcode.react";
 import { useNavigate } from "react-router-dom";
 import Groups from "../groups/Groups";
 import Friends from "../friends/Friends";
@@ -39,6 +40,7 @@ function Account(): JSX.Element {
   const [currentPage, setCurrentPage] = useState("account");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [username, setUsername] = useState("");
+  const [qrCodeStr, setQrCodeStr] = useState("");
 
   const [avatar, setAvatar] = useState({});
 
@@ -70,6 +72,7 @@ function Account(): JSX.Element {
 
   useEffect(() => {
     getUserDetails();
+    getQrCode();
   }, []);
 
   const getUserDetails = () => {
@@ -83,6 +86,37 @@ function Account(): JSX.Element {
         const fullName = `${userJSON.first_name} ${userJSON.last_name}`;
         setUsername(fullName);
       }
+    }
+  };
+
+  const getQrCode = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        const response = await axios.get(
+          `${rootUrl}/qr-code/generate-qr-code`,
+          {
+            params: {
+              user_id: userId,
+            },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response && response.status === 200) {
+          const responseData = response.data;
+          console.log("responseData = ", responseData);
+
+          if (responseData && responseData.qr_code_str) {
+            setQrCodeStr(responseData.qr_code_str);
+          }
+        }
+      }
+    } catch (e) {
+      console.log("error = ", e);
     }
   };
 
@@ -259,6 +293,8 @@ function Account(): JSX.Element {
           <Title level={2}>{username}</Title>
         </div>
 
+        {renderQrCode(qrCodeStr)}
+
         <div className="mx-5 my-4">
           <Card>
             <Form
@@ -371,6 +407,20 @@ function Account(): JSX.Element {
       </div>
     );
     return accountView;
+  };
+
+  const renderQrCode = (qrCodeStr: string) => {
+    let qrCode = null;
+
+    if (qrCodeStr) {
+      qrCode = (
+        <div className="d-flex justify-content-center my-3">
+          <QRCode value={qrCodeStr} size={150} />
+        </div>
+      );
+    }
+
+    return qrCode;
   };
 
   const handleLogoutClick = () => {
