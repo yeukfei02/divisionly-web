@@ -28,6 +28,7 @@ import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
 import Expense from "../expense/Expense";
+import TotalOweAmount from "../totalOweAmount/TotalOweAmount";
 
 const rootUrl = getRootUrl();
 
@@ -317,6 +318,10 @@ function Groups(): JSX.Element {
   const renderGroupsView = () => {
     const groupsView = (
       <div>
+        <div>
+          <TotalOweAmount />
+        </div>
+
         <div className="mx-5 my-3 d-flex justify-content-end">
           <Button type="primary" onClick={handleCreateGroupClick}>
             Create Group

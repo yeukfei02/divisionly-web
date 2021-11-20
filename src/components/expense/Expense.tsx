@@ -28,6 +28,7 @@ import Groups from "../groups/Groups";
 import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
+import TotalOweAmount from "../totalOweAmount/TotalOweAmount";
 
 const { Text } = Typography;
 
@@ -374,6 +375,10 @@ function Expense(): JSX.Element {
   const renderExpenseView = () => {
     const expenseView = (
       <div>
+        <div>
+          <TotalOweAmount />
+        </div>
+
         <div className="mx-5 my-3 d-flex justify-content-end">
           <Button type="primary" onClick={handleCreateExpenseClick}>
             Create Expense

@@ -18,6 +18,7 @@ import Groups from "../groups/Groups";
 import Activity from "../activity/Activity";
 import Expense from "../expense/Expense";
 import Account from "../account/Account";
+import TotalOweAmount from "../totalOweAmount/TotalOweAmount";
 
 const rootUrl = getRootUrl();
 
@@ -277,6 +278,10 @@ function Friends(): JSX.Element {
   const renderFriendsView = () => {
     const friendsView = (
       <div>
+        <div>
+          <TotalOweAmount />
+        </div>
+
         <div className="mx-5 my-3 d-flex justify-content-end">
           <Button type="primary" onClick={handleCreateFriendClick}>
             Create Friend
