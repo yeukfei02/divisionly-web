@@ -6,6 +6,7 @@ import {
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
+  ContactsOutlined,
   // EditOutlined,
   // DeleteOutlined,
 } from "@ant-design/icons";
@@ -17,6 +18,7 @@ import CustomAvatar from "../customAvatar/CustomAvatar";
 import Groups from "../groups/Groups";
 import Friends from "../friends/Friends";
 import Account from "../account/Account";
+import Contact from "../contact/Contact";
 
 const rootUrl = getRootUrl();
 
@@ -229,6 +231,10 @@ function Activity(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -250,6 +256,9 @@ function Activity(): JSX.Element {
         break;
       case "account":
         resultDiv = <Account />;
+        break;
+      case "contact":
+        resultDiv = <Contact />;
         break;
       default:
         break;
@@ -325,6 +334,9 @@ function Activity(): JSX.Element {
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
+            </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
             </Menu.Item>
           </Menu>
         </Col>

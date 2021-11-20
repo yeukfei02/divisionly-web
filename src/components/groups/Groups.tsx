@@ -16,6 +16,7 @@ import {
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
+  ContactsOutlined,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
@@ -25,9 +26,10 @@ import dayjs from "dayjs";
 import { getRootUrl } from "../../helpers/helpers";
 import CustomAvatar from "../customAvatar/CustomAvatar";
 import Friends from "../friends/Friends";
+import Expense from "../expense/Expense";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
-import Expense from "../expense/Expense";
+import Contact from "../contact/Contact";
 import TotalOweAmount from "../totalOweAmount/TotalOweAmount";
 
 const rootUrl = getRootUrl();
@@ -283,6 +285,10 @@ function Groups(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -307,6 +313,9 @@ function Groups(): JSX.Element {
         break;
       case "account":
         resultDiv = <Account />;
+        break;
+      case "contact":
+        resultDiv = <Contact />;
         break;
       default:
         break;
@@ -386,6 +395,9 @@ function Groups(): JSX.Element {
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
+            </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
             </Menu.Item>
           </Menu>
         </Col>

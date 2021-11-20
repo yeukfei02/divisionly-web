@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import {
   Row,
   Col,
-  Typography,
+  Menu,
   Form,
   Input,
+  Typography,
   Button,
   Card,
-  Menu,
-  Upload,
   message,
 } from "antd";
 import {
@@ -17,101 +16,77 @@ import {
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
-  InboxOutlined,
+  ContactsOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { getRootUrl } from "../../helpers/helpers";
-import CustomAvatar from "../customAvatar/CustomAvatar";
 import Groups from "../groups/Groups";
 import Friends from "../friends/Friends";
 import Expense from "../expense/Expense";
+import Activity from "../activity/Activity";
+import axios from "axios";
+import { getRootUrl } from "../../helpers/helpers";
+import CustomAvatar from "../customAvatar/CustomAvatar";
 import Account from "../account/Account";
 
-const { Dragger } = Upload;
 const { Title } = Typography;
 
 const rootUrl = getRootUrl();
 
-function CreateActivity(): JSX.Element {
+const { TextArea } = Input;
+
+function Contact(): JSX.Element {
   const navigate = useNavigate();
 
-  const [currentPage, setCurrentPage] = useState("activities");
-  const [image, setImage] = useState({});
-
-  const props = {
-    name: "file",
-    multiple: false,
-    action: `${rootUrl}/files/upload`,
-    onChange(info: any) {
-      const { status } = info.file;
-      if (status !== "uploading") {
-        console.log("info.file = ", info.file);
-        console.log("info.fileList = ", info.fileList);
-
-        const originFileObj = info.file.originFileObj;
-        if (originFileObj) {
-          setImage(originFileObj);
-        }
-      }
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onDrop(e: any) {
-      console.log("Dropped files = ", e.dataTransfer.files);
-    },
-  };
+  const [currentPage, setCurrentPage] = useState("contact");
 
   const onFinish = async (values: any) => {
     console.log("values = ", values);
 
     if (values) {
-      const name = values.name;
-      const description = values.description;
-      if (name && description && image) {
-        await createActivityRequest(name, description);
+      const subject = values.subject;
+      const message = values.message;
+
+      if (subject && message) {
+        await contactDivisionlySupportRequest(subject, message);
       }
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("error = ", errorInfo);
-  };
-
-  const createActivityRequest = async (title: string, description: string) => {
+  const contactDivisionlySupportRequest = async (
+    subject: string,
+    messageStr: string
+  ) => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       if (token && userId) {
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("user_id", userId);
-        formData.append("image", image as any);
+        const data = {
+          user_id: userId,
+          subject: subject,
+          message: messageStr,
+        };
 
-        const response = await axios({
-          method: "post",
-          url: `${rootUrl}/activities`,
-          data: formData,
+        const response = await axios.post(`${rootUrl}/contact`, data, {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         });
+
         if (response && response.status === 200) {
           const responseData = response.data;
           console.log("responseData = ", responseData);
 
-          message.success("Create Activity success");
+          message.success("Contact divisionly support success");
         }
       }
     } catch (e: any) {
-      console.log("error = ", e);
-      message.error(`Create Activity fail, error = ${e.message}`);
+      console.log("error =", e);
+      message.error(`Contact divisionly support fail, error = ${e.message}`);
     }
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("errorInfo = ", errorInfo);
   };
 
   const handleClick = (e: any) => {
@@ -139,6 +114,10 @@ function CreateActivity(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -156,13 +135,16 @@ function CreateActivity(): JSX.Element {
         resultDiv = <Friends />;
         break;
       case "activities":
-        resultDiv = <div>{renderActivityView()}</div>;
+        resultDiv = <Activity />;
         break;
       case "expenses":
         resultDiv = <Expense />;
         break;
       case "account":
         resultDiv = <Account />;
+        break;
+      case "contact":
+        resultDiv = <div>{renderContactView()}</div>;
         break;
       default:
         break;
@@ -171,19 +153,13 @@ function CreateActivity(): JSX.Element {
     return resultDiv;
   };
 
-  const renderActivityView = () => {
-    const activityView = (
-      <div>
-        <div className="d-flex justify-content-start mx-5 my-3">
-          <Button type="default" onClick={handleBackButtonClick}>
-            Back
-          </Button>
-        </div>
-
-        <div className="d-flex justify-content-center m-5">
-          <Card className="p-3 w-100">
+  const renderContactView = () => {
+    const contactView = (
+      <div className="d-flex flex-column">
+        <div className="mx-5 my-4">
+          <Card>
             <div className="d-flex justify-content-center my-3">
-              <Title level={3}>Create Activity</Title>
+              <Title level={3}>Contact divisionly support</Title>
             </div>
             <Form
               name="basic"
@@ -193,44 +169,32 @@ function CreateActivity(): JSX.Element {
               autoComplete="off"
             >
               <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: "Please enter your name" }]}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label="Description"
-                name="description"
+                label="Subject"
+                name="subject"
                 rules={[
-                  { required: true, message: "Please enter your description" },
+                  { required: true, message: "Please enter your subject" },
                 ]}
               >
                 <Input />
               </Form.Item>
 
-              <Form.Item>
-                <Dragger {...props}>
-                  <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
-                  </p>
-                  <p className="ant-upload-text">
-                    Click or drag file to this area to upload image
-                  </p>
-                  <p className="ant-upload-hint">
-                    Only support for a single upload.
-                  </p>
-                </Dragger>
+              <Form.Item
+                label="Message"
+                name="message"
+                rules={[
+                  { required: true, message: "Please enter your message" },
+                ]}
+              >
+                <TextArea rows={5} />
               </Form.Item>
 
               <Form.Item>
                 <Button
-                  style={{ width: "100%" }}
                   type="primary"
                   htmlType="submit"
+                  style={{ width: "100%" }}
                 >
-                  Create Activity
+                  Submit
                 </Button>
               </Form.Item>
             </Form>
@@ -238,11 +202,7 @@ function CreateActivity(): JSX.Element {
         </div>
       </div>
     );
-    return activityView;
-  };
-
-  const handleBackButtonClick = () => {
-    navigate(`/dashboard/activities`);
+    return contactView;
   };
 
   return (
@@ -252,7 +212,7 @@ function CreateActivity(): JSX.Element {
           <Menu
             onClick={handleClick}
             style={{ height: "100vh" }}
-            defaultSelectedKeys={["4"]}
+            defaultSelectedKeys={["6"]}
             mode="inline"
           >
             <Menu.Item key="1" icon={<GroupOutlined />}>
@@ -270,6 +230,9 @@ function CreateActivity(): JSX.Element {
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
             </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
+            </Menu.Item>
           </Menu>
         </Col>
         <Col span={20}>
@@ -285,4 +248,4 @@ function CreateActivity(): JSX.Element {
   );
 }
 
-export default CreateActivity;
+export default Contact;
