@@ -6,6 +6,7 @@ import {
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
+  ContactsOutlined,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
@@ -18,6 +19,8 @@ import Groups from "../groups/Groups";
 import Activity from "../activity/Activity";
 import Expense from "../expense/Expense";
 import Account from "../account/Account";
+import Contact from "../contact/Contact";
+import TotalOweAmount from "../totalOweAmount/TotalOweAmount";
 
 const rootUrl = getRootUrl();
 
@@ -242,6 +245,10 @@ function Friends(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -267,6 +274,9 @@ function Friends(): JSX.Element {
       case "account":
         resultDiv = <Account />;
         break;
+      case "contact":
+        resultDiv = <Contact />;
+        break;
       default:
         break;
     }
@@ -277,6 +287,10 @@ function Friends(): JSX.Element {
   const renderFriendsView = () => {
     const friendsView = (
       <div>
+        <div>
+          <TotalOweAmount />
+        </div>
+
         <div className="mx-5 my-3 d-flex justify-content-end">
           <Button type="primary" onClick={handleCreateFriendClick}>
             Create Friend
@@ -341,6 +355,9 @@ function Friends(): JSX.Element {
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
+            </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
             </Menu.Item>
           </Menu>
         </Col>

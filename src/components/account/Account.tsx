@@ -18,6 +18,7 @@ import {
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
+  ContactsOutlined,
   InboxOutlined,
 } from "@ant-design/icons";
 import QRCode from "qrcode.react";
@@ -26,6 +27,7 @@ import Groups from "../groups/Groups";
 import Friends from "../friends/Friends";
 import Expense from "../expense/Expense";
 import Activity from "../activity/Activity";
+import Contact from "../contact/Contact";
 import axios from "axios";
 import { getRootUrl } from "../../helpers/helpers";
 
@@ -250,6 +252,10 @@ function Account(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -274,6 +280,9 @@ function Account(): JSX.Element {
         break;
       case "account":
         resultDiv = <div>{renderAccountView()}</div>;
+        break;
+      case "contact":
+        resultDiv = <Contact />;
         break;
       default:
         break;
@@ -453,6 +462,9 @@ function Account(): JSX.Element {
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
+            </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
             </Menu.Item>
           </Menu>
         </Col>

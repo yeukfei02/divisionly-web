@@ -16,6 +16,7 @@ import {
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
+  ContactsOutlined,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
@@ -28,6 +29,8 @@ import Groups from "../groups/Groups";
 import Friends from "../friends/Friends";
 import Activity from "../activity/Activity";
 import Account from "../account/Account";
+import Contact from "../contact/Contact";
+import TotalOweAmount from "../totalOweAmount/TotalOweAmount";
 
 const { Text } = Typography;
 
@@ -339,6 +342,10 @@ function Expense(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -364,6 +371,9 @@ function Expense(): JSX.Element {
       case "account":
         resultDiv = <Account />;
         break;
+      case "contact":
+        resultDiv = <Contact />;
+        break;
       default:
         break;
     }
@@ -374,6 +384,10 @@ function Expense(): JSX.Element {
   const renderExpenseView = () => {
     const expenseView = (
       <div>
+        <div>
+          <TotalOweAmount />
+        </div>
+
         <div className="mx-5 my-3 d-flex justify-content-end">
           <Button type="primary" onClick={handleCreateExpenseClick}>
             Create Expense
@@ -438,6 +452,9 @@ function Expense(): JSX.Element {
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
+            </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
             </Menu.Item>
           </Menu>
         </Col>
