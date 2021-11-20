@@ -158,6 +158,34 @@ function Expense(): JSX.Element {
       key: "owe_amount",
     },
     {
+      title: "Owed friend",
+      dataIndex: "friend",
+      key: "friend",
+      render: (friend: any, record: any) => {
+        let friendName = "";
+
+        if (friend && record.owe_amount) {
+          friendName = friend.name;
+        }
+
+        return friendName;
+      },
+    },
+    {
+      title: "Currency",
+      dataIndex: "currency",
+      key: "currency",
+      render: (currency: any) => {
+        let code = "";
+
+        if (currency) {
+          code = currency.code;
+        }
+
+        return code;
+      },
+    },
+    {
       title: "Image",
       dataIndex: "image",
       key: "image",
