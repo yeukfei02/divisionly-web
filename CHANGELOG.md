@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/yeukfei02/divisionly-web/compare/v0.1.1...v0.1.2) (2021-11-21)
+
+
+### Features
+
+* 🎸 add contact in navbar and component ([36a0fc5](https://github.com/yeukfei02/divisionly-web/commit/36a0fc506648dba042c48792aff899ae2fe8e131))
+* 🎸 add favicon ([95a34a7](https://github.com/yeukfei02/divisionly-web/commit/95a34a7d3f56e9b72c49d57d1afab8047e46c426))
+* 🎸 add owed friend and currency column ([f998a99](https://github.com/yeukfei02/divisionly-web/commit/f998a993663f9613b3405bb0f6aab027f3c5def7))
+* 🎸 add semgrep.yml ([ad74025](https://github.com/yeukfei02/divisionly-web/commit/ad74025fea066dc5c4d8c3cb44738d01f5d97101))
+* 🎸 add TotalOweAmount component ([2a4ce0d](https://github.com/yeukfei02/divisionly-web/commit/2a4ce0d53d5916d3f0287c3385c85f444df7c1da))
+
+
+### Bug Fixes
+
+* 🐛 add contact route in details page ([593309a](https://github.com/yeukfei02/divisionly-web/commit/593309ab2d4cabfeb19837f69b80e032504f4ca9))
+* 🐛 fix contact page in create page and expense details ([b30caa6](https://github.com/yeukfei02/divisionly-web/commit/b30caa657b0a4f0cc877bf7b76959a352f67d31c))
+* 🐛 update html title ([d6c3ff3](https://github.com/yeukfei02/divisionly-web/commit/d6c3ff33a476478aff94ecdda8697e4f3ec25f9f))
+
 ### 0.1.1 (2021-11-18)
 
 
