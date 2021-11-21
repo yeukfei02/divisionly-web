@@ -5,7 +5,7 @@
 
 split expenses with friends
 
-url: <https://divisionly-web.vercel.app/>
+url: <https://divisionly.net/>
 
 ## Requirement
 
