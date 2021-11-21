@@ -19,6 +19,7 @@ import {
   DollarOutlined,
   SettingOutlined,
   InboxOutlined,
+  ContactsOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -28,6 +29,7 @@ import Groups from "../groups/Groups";
 import Activity from "../activity/Activity";
 import Expense from "../expense/Expense";
 import Account from "../account/Account";
+import Contact from "../contact/Contact";
 
 const { Dragger } = Upload;
 const { Title } = Typography;
@@ -147,6 +149,10 @@ function CreateFriend(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -171,6 +177,9 @@ function CreateFriend(): JSX.Element {
         break;
       case "account":
         resultDiv = <Account />;
+        break;
+      case "contact":
+        resultDiv = <Contact />;
         break;
       default:
         break;
@@ -287,6 +296,9 @@ function CreateFriend(): JSX.Element {
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
+            </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
             </Menu.Item>
           </Menu>
         </Col>

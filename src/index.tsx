@@ -2,8 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import Favicon from "react-favicon";
 import App from "./components/App";
 import reportWebVitals from "./reportWebVitals";
+
+import favicon from "../src/images/favicon-32x32.png";
 
 import "antd/dist/antd.css";
 import "./index.css";
@@ -20,6 +23,7 @@ Sentry.init({
 
 ReactDOM.render(
   <React.StrictMode>
+    <Favicon url={favicon} />
     <App />
   </React.StrictMode>,
   document.getElementById("root")
