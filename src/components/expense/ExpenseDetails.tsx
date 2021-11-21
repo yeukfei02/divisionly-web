@@ -233,7 +233,7 @@ function ExpenseDetails(): JSX.Element {
         >
           <Title level={4}>Friend:</Title>
           <a className="display-link">
-            {expense.friend ? expense.friend.id : ""}
+            {expense.friend ? expense.friend.name : ""}
           </a>
         </div>
       );
@@ -255,7 +255,7 @@ function ExpenseDetails(): JSX.Element {
         >
           <Title level={4}>Group:</Title>
           <a className="display-link">
-            {expense.group ? expense.group.id : ""}
+            {expense.group ? expense.group.name : ""}
           </a>
         </div>
       );
