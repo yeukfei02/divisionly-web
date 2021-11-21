@@ -6,6 +6,7 @@ import {
   MenuOutlined,
   DollarOutlined,
   SettingOutlined,
+  ContactsOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -15,6 +16,7 @@ import Groups from "../groups/Groups";
 import Activity from "../activity/Activity";
 import Expense from "../expense/Expense";
 import Account from "../account/Account";
+import Contact from "../contact/Contact";
 
 const { Title, Text } = Typography;
 
@@ -86,6 +88,10 @@ function FriendDetails(): JSX.Element {
           setCurrentPage("account");
           navigate(`/dashboard/account`);
           break;
+        case "6":
+          setCurrentPage("contact");
+          navigate(`/dashboard/contact`);
+          break;
         default:
           break;
       }
@@ -110,6 +116,9 @@ function FriendDetails(): JSX.Element {
         break;
       case "account":
         resultDiv = <Account />;
+        break;
+      case "contact":
+        resultDiv = <Contact />;
         break;
       default:
         break;
@@ -251,6 +260,9 @@ function FriendDetails(): JSX.Element {
             </Menu.Item>
             <Menu.Item key="5" icon={<SettingOutlined />}>
               Account
+            </Menu.Item>
+            <Menu.Item key="6" icon={<ContactsOutlined />}>
+              Contact
             </Menu.Item>
           </Menu>
         </Col>
