@@ -5,8 +5,6 @@
 
 split expenses with friends
 
-url: <https://divisionly-web.vercel.app/>
-
 ## Requirement
 
 - install yarn
